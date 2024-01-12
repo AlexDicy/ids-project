@@ -8,13 +8,15 @@ public class POI implements Content {
 
     private String description;
 
+    private String author;
+
     private boolean approved;
 
     private double latitude;
 
     private double longitude;
 
-    public POI(String id, String name, String description, boolean approved, double latitude, double longitude) {
+    public POI(String id, String name, String description, String author, boolean approved, double longitude, double latitude) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -50,7 +52,7 @@ public class POI implements Content {
 
     @Override
     public String getAuthor() {
-        return null;
+        return author;
     }
 
     public double getLatitude() {
