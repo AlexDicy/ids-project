@@ -1,7 +1,6 @@
 package it.unicam.cs.ids;
 
 import it.unicam.cs.ids.model.POI;
-import it.unicam.cs.ids.model.StaticPOI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,10 +16,10 @@ public class POIManagerTest {
     @BeforeEach
     void setup(){
         list.clear();
-        list.add(new StaticPOI("ID_1", "POI_1", "First POI", false, 88, 180));
-        list.add(new StaticPOI("ID_2", "POI_2", "Second POI", false, 70, 150));
-        list.add(new StaticPOI("ID_3", "POI_3", "Third POI", false, 68, 178));
-        list.add(new StaticPOI("ID_4", "POI_4", "Fourth POI", false, 90, 180));
+        list.add(new POI("ID_1", "POI_1", "First POI", false, 88, 180));
+        list.add(new POI("ID_2", "POI_2", "Second POI", false, 70, 150));
+        list.add(new POI("ID_3", "POI_3", "Third POI", false, 68, 178));
+        list.add(new POI("ID_4", "POI_4", "Fourth POI", false, 90, 180));
     }
 
     @Test
@@ -40,7 +39,7 @@ public class POIManagerTest {
         POIManager manager = new POIManager();
         manager.poiList = list;
         assertEquals(4, manager.getAll().size());
-        POI p = new StaticPOI("ID_5", "POI_5", "Fifth POI", false, 90, 180);
+        POI p = new POI("ID_5", "POI_5", "Fifth POI", false, 90, 180);
         manager.submit(p);
         assertEquals(5, manager.getAll().size());
         assertEquals(p, manager.get("ID_5"));

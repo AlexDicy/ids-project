@@ -1,4 +1,6 @@
-package it.unicam.cs.ids.model;
+package it.unicam.cs.ids;
+
+import it.unicam.cs.ids.model.Content;
 
 import java.util.List;
 
