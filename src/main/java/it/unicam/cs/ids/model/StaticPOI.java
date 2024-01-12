@@ -52,4 +52,9 @@ public class StaticPOI implements  POI{
     public double getLongitude() {
         return longitude;
     }
+
+    @Override
+    public void setApproved(boolean state) {
+        approved = state;
+    }
 }

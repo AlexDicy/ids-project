@@ -1,17 +1,20 @@
 package it.unicam.cs.ids;
 
+import it.unicam.cs.ids.model.ContentManager;
 import it.unicam.cs.ids.model.POI;
+import it.unicam.cs.ids.model.StaticPOI;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class POIManager {
+public class POIManager implements ContentManager<POI> {
 
     protected List<POI> poiList = new ArrayList<>();
 
     public POI get(String id) {
         if (id == null) {
-            return null;
+            throw new IllegalArgumentException("Id is not valid");
         }
 
         for (POI element : poiList) {
@@ -68,5 +71,34 @@ public class POIManager {
         }
 
         return pois;
+    }
+
+    @Override
+    public void approve(String id) {
+        POI poiToApprove = get(id);
+        if (poiToApprove == null) {
+            throw new IllegalArgumentException("POI not found");
+        }
+        poiToApprove.setApproved(true);
+    }
+
+    @Override
+    public void remove(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id is not valid");
+        }
+
+        poiList.removeIf(poi -> poi.getId().equals(id));
+    }
+
+    @Override
+    public List<POI> getContentToApprove() {
+        List<POI> toApprove = new ArrayList<>();
+        for (POI poi : poiList) {
+            if (!poi.isApproved()) {
+                toApprove.add(poi);
+            }
+        }
+        return toApprove;
     }
 }
