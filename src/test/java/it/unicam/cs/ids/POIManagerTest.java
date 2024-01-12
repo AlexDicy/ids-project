@@ -70,4 +70,44 @@ public class POIManagerTest {
         assertEquals(1, retrieved.size());
         assertEquals(list.get(2), retrieved.get(0));
     }
+
+    @Test
+    void shouldApprove(){
+        POIManager manager = new POIManager();
+        manager.poiList = list;
+        assertFalse(manager.get("ID_1").isApproved());
+        assertFalse(manager.get("ID_2").isApproved());
+        manager.approve("ID_1");
+        assertTrue(manager.get("ID_1").isApproved());
+        assertFalse(manager.get("ID_2").isApproved());
+    }
+
+    @Test
+    void shouldRemove(){
+        POIManager manager = new POIManager();
+        manager.poiList = list;
+        assertEquals(4, manager.getAll().size());
+        manager.remove("ID_1");
+        assertEquals(3, manager.getAll().size());
+        assertNull(manager.get("ID_1"));
+    }
+
+    @Test
+    void shouldGetContentToApprove(){
+        POIManager manager = new POIManager();
+        manager.poiList = list;
+        assertEquals(4, manager.getAll().size());
+        assertEquals(4, manager.getContentToApprove().size());
+        manager.approve("ID_1");
+        assertEquals(3, manager.getContentToApprove().size());
+        manager.approve("ID_2");
+        List<POI> contentToApprove = manager.getContentToApprove();
+        assertEquals(2, contentToApprove.size());
+        assertEquals(list.get(2), contentToApprove.get(0));
+        assertEquals(list.get(3), contentToApprove.get(1));
+        manager.approve("ID_3");
+        assertEquals(1, manager.getContentToApprove().size());
+        manager.approve("ID_4");
+        assertEquals(0, manager.getContentToApprove().size());
+    }
 }
