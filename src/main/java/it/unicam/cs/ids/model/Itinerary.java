@@ -50,15 +50,15 @@ public class Itinerary implements Content {
         return author;
     }
 
-    List<POI> getPoiList() {
+    public List<POI> getPoiList() {
         return poiList;
     }
 
-    void addPoi(POI poi) {
+    public void addPoi(POI poi) {
         poiList.add(poi);
     }
 
-    void removePoi(String poiId) {
+    public void removePoi(String poiId) {
         poiList.removeIf(poi -> poi.getId().equals(poiId));
     }
 }
