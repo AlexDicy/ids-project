@@ -1,5 +1,6 @@
 package it.unicam.cs.ids;
 
+import it.unicam.cs.ids.model.Coordinate;
 import it.unicam.cs.ids.model.Itinerary;
 import it.unicam.cs.ids.model.POI;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,22 +16,22 @@ public class ItineraryManagerTest {
     List<Itinerary> list = new ArrayList<>();
 
     @BeforeEach
-    void setup(){
+    void setup() {
         list.clear();
         List<POI> itineraryList1 = new ArrayList<>();
-        itineraryList1.add(new POI("POI_ID_1", "POI_1", "First POI", "", false, 180, 90));
-        POI poi2 = new POI("POI_ID_2", "POI_2", "Second POI", "", false, 180, 90);
+        itineraryList1.add(new POI("POI_ID_1", "POI_1", "First POI", "", false, new Coordinate(90, 180)));
+        POI poi2 = new POI("POI_ID_2", "POI_2", "Second POI", "", false, new Coordinate(90, 180));
         itineraryList1.add(poi2);
         List<POI> itineraryList2 = new ArrayList<>();
-        itineraryList2.add(new POI("POI_ID_3", "POI_3", "Third POI", "", false, 180, 90));
-        itineraryList2.add(new POI("POI_ID_4", "POI_4", "Fourth POI", "", false, 180, 90));
+        itineraryList2.add(new POI("POI_ID_3", "POI_3", "Third POI", "", false, new Coordinate(90, 180)));
+        itineraryList2.add(new POI("POI_ID_4", "POI_4", "Fourth POI", "", false, new Coordinate(90, 180)));
         itineraryList2.add(poi2);
         list.add(new Itinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, itineraryList1));
         list.add(new Itinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, itineraryList2));
     }
 
     @Test
-    void shouldGet(){
+    void shouldGet() {
         ItineraryManager manager = new ItineraryManager();
         manager.itineraryList = list;
         assertEquals(list.get(0), manager.get("ID_1"));
@@ -47,11 +48,11 @@ public class ItineraryManagerTest {
     }
 
     @Test
-    void shouldSubmit(){
+    void shouldSubmit() {
         ItineraryManager manager = new ItineraryManager();
         manager.itineraryList = list;
         assertEquals(2, manager.getAll().size());
-        POI p = new POI("ID_5", "POI_5", "Fifth POI", "", false, 180, 90);
+        POI p = new POI("ID_5", "POI_5", "Fifth POI", "", false, new Coordinate(90, 180));
         Itinerary it = new Itinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new ArrayList<>());
         it.addPoi(p);
         manager.submit(it);
@@ -60,14 +61,14 @@ public class ItineraryManagerTest {
     }
 
     @Test
-    void shouldGetAll(){
+    void shouldGetAll() {
         ItineraryManager manager = new ItineraryManager();
         manager.itineraryList = list;
         assertEquals(2, manager.getAll().size());
     }
 
     @Test
-    void shouldFind(){
+    void shouldFind() {
         ItineraryManager manager = new ItineraryManager();
         manager.itineraryList = list;
         List<Itinerary> retrieved = manager.find("Itinerary 2");
@@ -76,7 +77,7 @@ public class ItineraryManagerTest {
     }
 
     @Test
-    void shouldApprove(){
+    void shouldApprove() {
         ItineraryManager manager = new ItineraryManager();
         manager.itineraryList = list;
         assertFalse(manager.get("ID_1").isApproved());
@@ -87,7 +88,7 @@ public class ItineraryManagerTest {
     }
 
     @Test
-    void shouldRemove(){
+    void shouldRemove() {
         ItineraryManager manager = new ItineraryManager();
         manager.itineraryList = list;
         assertEquals(2, manager.getAll().size());
@@ -97,7 +98,7 @@ public class ItineraryManagerTest {
     }
 
     @Test
-    void shouldGetContentToApprove(){
+    void shouldGetContentToApprove() {
         ItineraryManager manager = new ItineraryManager();
         manager.itineraryList = list;
         assertEquals(2, manager.getAll().size());

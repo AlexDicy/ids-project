@@ -1,5 +1,7 @@
 package it.unicam.cs.ids;
 
+import it.unicam.cs.ids.model.Coordinate;
+import it.unicam.cs.ids.model.Municipality;
 import it.unicam.cs.ids.model.POI;
 
 import java.util.ArrayList;
@@ -8,7 +10,12 @@ import java.util.Objects;
 
 public class POIManager implements ContentManager<POI> {
 
+    private final Municipality municipality;
     protected List<POI> poiList = new ArrayList<>();
+
+    public POIManager(Municipality municipality) {
+        this.municipality = municipality;
+    }
 
     @Override
     public POI get(String id) {
@@ -47,13 +54,13 @@ public class POIManager implements ContentManager<POI> {
     @Override
     public void approve(String id) {
         POI poiToApprove = get(id);
-        Objects.requireNonNull(poiToApprove,"POI not found");
+        Objects.requireNonNull(poiToApprove, "POI not found");
         poiToApprove.setApproved(true);
     }
 
     @Override
     public void remove(String id) {
-        Objects.requireNonNull(id ,"Id is not valid");
+        Objects.requireNonNull(id, "Id is not valid");
         poiList.removeIf(poi -> poi.getId().equals(id));
     }
 
@@ -68,8 +75,8 @@ public class POIManager implements ContentManager<POI> {
         return toApprove;
     }
 
-    public List<POI> getInRange(double fromLatitude, double fromLongitude, double toLatitude, double toLongitude) {
-        if (fromLatitude > toLatitude || fromLongitude > toLongitude) {
+    public List<POI> getInRange(Coordinate fromCoordinate, Coordinate toCoordinate) {
+        if (fromCoordinate.latitude() > toCoordinate.latitude() || fromCoordinate.longitude() > toCoordinate.longitude()) {
             throw new IllegalArgumentException("Invalid latitude or longitude range");
         }
 
@@ -79,8 +86,7 @@ public class POIManager implements ContentManager<POI> {
             double latitude = element.getLatitude();
             double longitude = element.getLongitude();
 
-            if (latitude >= fromLatitude && latitude <= toLatitude &&
-                    longitude >= fromLongitude && longitude <= toLongitude) {
+            if (latitude >= fromCoordinate.latitude() && latitude <= toCoordinate.latitude() && longitude >= fromCoordinate.longitude() && longitude <= toCoordinate.longitude()) {
                 poisInRange.add(element);
             }
         }
@@ -88,4 +94,25 @@ public class POIManager implements ContentManager<POI> {
         return poisInRange;
     }
 
+    /**
+     * Check if the coordinate is inside the perimeter area of the Municipality
+     *
+     * @param coordinate the coordinate to check
+     * @return true if the coordinate is inside the perimeter area of the Municipality, false otherwise
+     */
+    public boolean checkCoordinate(Coordinate coordinate) {
+        List<Coordinate> coordinates = municipality.perimeter();
+        // we're going to use a ray-casting/jordan curve theorem algorithm to check if the coordinate is inside the perimeter area of the Municipality
+        int intersections = 0;
+        for (int i = 0, j = coordinates.size() - 1; i < coordinates.size(); j = i++) {
+            Coordinate c1 = coordinates.get(i);
+            Coordinate c2 = coordinates.get(j);
+            if ((c1.latitude() > coordinate.latitude()) != (c2.latitude() > coordinate.latitude())) {
+                if (coordinate.longitude() < (c2.longitude() - c1.longitude()) * (coordinate.latitude() - c1.latitude()) / (c2.latitude() - c1.latitude()) + c1.longitude()) {
+                    intersections++;
+                }
+            }
+        }
+        return intersections % 2 != 0;
+    }
 }

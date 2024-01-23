@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public class ItineraryManager implements ContentManager<Itinerary> {
     protected List<Itinerary> itineraryList;
+
     @Override
     public Itinerary get(String id) {
         Objects.requireNonNull(id, "Id is not valid");
