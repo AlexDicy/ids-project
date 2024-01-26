@@ -3,6 +3,7 @@ package it.unicam.cs.ids;
 import it.unicam.cs.ids.model.Image;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ImageManager implements ContentManager<Image> {
     /**
@@ -40,8 +41,23 @@ public class ImageManager implements ContentManager<Image> {
     }
 
     @Override
+    public void submit(List<Image> content) {
+        Objects.requireNonNull(content, "Content list is empty");
+        for(Image i : content){
+            submit(i);
+        }
+    }
+
+    @Override
     public List<Image> getAll() {
         return new ArrayList<>(images);
+    }
+
+    @Override
+    public List<Image> getInDateRange(Date start, Date end) {
+        return images.stream()
+                .filter(image -> image.getCreationDate().after(start) && image.getCreationDate().before(end))
+                .collect(Collectors.toList());
     }
 
     @Override
