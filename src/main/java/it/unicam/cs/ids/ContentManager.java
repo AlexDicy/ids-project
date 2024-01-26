@@ -10,6 +10,7 @@ public interface ContentManager<C extends Content> {
     C get(String id);
 
     void submit(C content);
+
     void submit(List<C> content);
 
     List<C> getAll();
