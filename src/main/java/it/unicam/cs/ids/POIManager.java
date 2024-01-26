@@ -5,8 +5,10 @@ import it.unicam.cs.ids.model.Municipality;
 import it.unicam.cs.ids.model.POI;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class POIManager implements ContentManager<POI> {
 
@@ -32,6 +34,12 @@ public class POIManager implements ContentManager<POI> {
     public void submit(POI poi) {
         Objects.requireNonNull(poi, "Invalid poi");
         poiList.add(poi);
+    }
+
+    @Override
+    public void submit(List<POI> content) {
+        Objects.requireNonNull(content, "Invalid poi list");
+        poiList.addAll(content);
     }
 
     @Override
@@ -73,6 +81,12 @@ public class POIManager implements ContentManager<POI> {
             }
         }
         return toApprove;
+    }
+
+    @Override
+    public List<POI> getInDateRange(Date start, Date end) {
+        Stream<POI> stream = poiList.stream();
+        return stream.filter(poi -> poi.getCreationDate().after(start) && poi.getCreationDate().before(end)).toList();
     }
 
     public List<POI> getInRange(Coordinate fromCoordinate, Coordinate toCoordinate) {

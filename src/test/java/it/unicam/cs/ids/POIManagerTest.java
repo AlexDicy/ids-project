@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,10 +20,10 @@ public class POIManagerTest {
     @BeforeEach
     void setup() {
         list.clear();
-        list.add(new POI("ID_1", "POI_1", "First POI", "", false, new Coordinate(88, 180)));
-        list.add(new POI("ID_2", "POI_2", "Second POI", "", false, new Coordinate(70, 150)));
-        list.add(new POI("ID_3", "POI_3", "Third POI", "", false, new Coordinate(68, 178)));
-        list.add(new POI("ID_4", "POI_4", "Fourth POI", "", false, new Coordinate(90, 180)));
+        list.add(new POI("ID_1", "POI_1", "First POI", "", false, new Date(), new Coordinate(88, 180)));
+        list.add(new POI("ID_2", "POI_2", "Second POI", "", false, new Date(), new Coordinate(70, 150)));
+        list.add(new POI("ID_3", "POI_3", "Third POI", "", false, new Date(), new Coordinate(68, 178)));
+        list.add(new POI("ID_4", "POI_4", "Fourth POI", "", false, new Date(), new Coordinate(90, 180)));
         List<Coordinate> perimeter = new ArrayList<>();
         perimeter.add(new Coordinate(10, 10));
         perimeter.add(new Coordinate(30, 100));
@@ -50,10 +51,24 @@ public class POIManagerTest {
         POIManager manager = new POIManager(municipality);
         manager.poiList = list;
         assertEquals(4, manager.getAll().size());
-        POI p = new POI("ID_5", "POI_5", "Fifth POI", "", false, new Coordinate(90, 180));
+        POI p = new POI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
         manager.submit(p);
         assertEquals(5, manager.getAll().size());
         assertEquals(p, manager.get("ID_5"));
+    }
+
+    @Test
+    void shouldSubmitAll() {
+        POIManager manager = new POIManager(municipality);
+        manager.poiList = list;
+        assertEquals(4, manager.getAll().size());
+        List<POI> newList = new ArrayList<>();
+        newList.add(new POI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180)));
+        newList.add(new POI("ID_6", "POI_6", "Sixth POI", "", false, new Date(), new Coordinate(90, 180)));
+        manager.submit(newList);
+        assertEquals(6, manager.getAll().size());
+        assertEquals(newList.get(0), manager.get("ID_5"));
+        assertEquals(newList.get(1), manager.get("ID_6"));
     }
 
     @Test
@@ -158,5 +173,26 @@ public class POIManagerTest {
         assertFalse(manager.checkCoordinate(new Coordinate(20, 139)));
         assertFalse(manager.checkCoordinate(new Coordinate(119, 170)));
         assertFalse(manager.checkCoordinate(new Coordinate(120, 9)));
+    }
+
+    @Test
+    void shouldGetInDateRange() {
+        POIManager manager = new POIManager(municipality);
+        manager.poiList = new ArrayList<>();
+        Date today = new Date();
+        Date yesterday = new Date(today.getTime() - 86400000L);
+        Date tomorrow = new Date(today.getTime() + 86400000L);
+        POI poi1 = new POI("ID_1", "POI_1", "First POI", "", false, yesterday, new Coordinate(88, 180));
+        POI poi2 = new POI("ID_2", "POI_2", "Second POI", "", false, new Date(today.getTime() - 23 * 60 * 60 * 1000), new Coordinate(70, 150));
+        POI poi3 = new POI("ID_2", "POI_2", "Second POI", "", false, today, new Coordinate(70, 150));
+        POI poi4 = new POI("ID_3", "POI_3", "Third POI", "", false, new Date(today.getTime() + 23 * 60 * 60 * 1000), new Coordinate(68, 178));
+        POI poi5 = new POI("ID_3", "POI_3", "Third POI", "", false, tomorrow, new Coordinate(68, 178));
+        manager.poiList.addAll(List.of(poi1, poi2, poi3, poi4, poi5));
+        assertEquals(5, manager.getAll().size());
+        assertEquals(1, manager.getInDateRange(yesterday, today).size());
+        assertEquals(1, manager.getInDateRange(today, tomorrow).size());
+        assertEquals(3, manager.getInDateRange(yesterday, tomorrow).size());
+        assertEquals(2, manager.getInDateRange(yesterday, new Date(today.getTime() + 60 * 60 * 1000)).size());
+        assertEquals(2, manager.getInDateRange(new Date(today.getTime() - 60 * 60 * 1000), tomorrow).size());
     }
 }
