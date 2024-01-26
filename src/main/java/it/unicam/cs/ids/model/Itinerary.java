@@ -1,12 +1,13 @@
 package it.unicam.cs.ids.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Itinerary extends Content {
     private final List<POI> poiList;
 
-    public Itinerary(String id, String name, String description, String author, boolean approved, List<POI> poiList) {
-        super(id, name, description, author, approved);
+    public Itinerary(String id, String name, String description, String createdBy, boolean approved, Date cretionDate, List<POI> poiList) {
+        super(id, name, description, createdBy, approved, cretionDate);
         this.poiList = poiList;
     }
 

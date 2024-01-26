@@ -3,8 +3,10 @@ package it.unicam.cs.ids;
 import it.unicam.cs.ids.model.Itinerary;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class ItineraryManager implements ContentManager<Itinerary> {
     protected List<Itinerary> itineraryList;
@@ -24,6 +26,12 @@ public class ItineraryManager implements ContentManager<Itinerary> {
     public void submit(Itinerary content) {
         Objects.requireNonNull(content, "Invalid itinerary");
         itineraryList.add(content);
+    }
+
+    @Override
+    public void submit(List<Itinerary> content) {
+        Objects.requireNonNull(content, "Invalid itinerary list");
+        itineraryList.addAll(content);
     }
 
     @Override
@@ -66,5 +74,13 @@ public class ItineraryManager implements ContentManager<Itinerary> {
             }
         }
         return itineraries;
+    }
+
+    @Override
+    public List<Itinerary> getInDateRange(Date start, Date end) {
+        Stream<Itinerary> itineraryStream = itineraryList.stream();
+        return itineraryStream.filter(itinerary -> itinerary.getCreationDate().after(start)
+                && itinerary.getCreationDate().before(end))
+                .toList();
     }
 }
