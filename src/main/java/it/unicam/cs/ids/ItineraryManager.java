@@ -80,7 +80,7 @@ public class ItineraryManager implements ContentManager<Itinerary> {
     public List<Itinerary> getInDateRange(Date start, Date end) {
         Stream<Itinerary> itineraryStream = itineraryList.stream();
         return itineraryStream.filter(itinerary -> itinerary.getCreationDate().after(start)
-                && itinerary.getCreationDate().before(end))
+                        && itinerary.getCreationDate().before(end))
                 .toList();
     }
 }

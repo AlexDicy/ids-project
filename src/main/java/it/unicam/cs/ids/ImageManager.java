@@ -43,7 +43,7 @@ public class ImageManager implements ContentManager<Image> {
     @Override
     public void submit(List<Image> content) {
         Objects.requireNonNull(content, "Content list is empty");
-        for(Image i : content){
+        for (Image i : content) {
             submit(i);
         }
     }

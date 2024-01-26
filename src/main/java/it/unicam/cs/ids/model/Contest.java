@@ -22,7 +22,4 @@ public interface Contest {
     Contest getDetails();
 
     String getAnimatorId();
-
-
-
 }

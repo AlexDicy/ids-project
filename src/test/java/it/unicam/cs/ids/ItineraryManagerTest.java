@@ -141,7 +141,7 @@ public class ItineraryManagerTest {
         Date yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
         Date tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
         Itinerary it1 = new Itinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(today.getTime() - 48 * 60 * 60 * 1000), new ArrayList<>());
-        Itinerary it2 = new Itinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, yesterday,new ArrayList<>());
+        Itinerary it2 = new Itinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, yesterday, new ArrayList<>());
         Itinerary it3 = new Itinerary("ID_3", "ITIN_3", "Itinerary 3", "", false, new Date(today.getTime() - 10 * 60 * 60 * 1000), new ArrayList<>());
         Itinerary it4 = new Itinerary("ID_4", "ITIN_4", "Itinerary 4", "", false, today, new ArrayList<>());
         Itinerary it5 = new Itinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(today.getTime() + 10 * 60 * 60 * 1000), new ArrayList<>());
