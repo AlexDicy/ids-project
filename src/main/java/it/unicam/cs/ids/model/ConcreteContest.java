@@ -1,5 +1,6 @@
 package it.unicam.cs.ids.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,8 @@ public class ConcreteContest implements Contest {
         this.startDate = Objects.requireNonNull(startDate, "Start date is null");
         this.endDate = Objects.requireNonNull(endDate, "End date is null");
         this.createdBy = Objects.requireNonNull(createdBy, "Creator ID is null");
+        allowedUsers = new ArrayList<>();
+        winners = new ArrayList<>();
     }
 
     public String getId() {

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class ContestManager {
 
-    private final List<Contest> contestList = new ArrayList<>();
+    protected final List<Contest> contestList = new ArrayList<>();
 
     public Contest get(String id) {
         Objects.requireNonNull(id, "Id is not valid");
@@ -56,14 +56,13 @@ public class ContestManager {
         } else {
             contents.addAll(UtilClass.getItineraryManager().getInDateRange(startDate, endDate));
             contents.addAll(UtilClass.getPOIManager().getInDateRange(startDate, endDate));
-
-            List<String> allowedUsers = contest.getAllowedUsers();
-
-            return contents.stream()
-                    .filter(content -> content.isApproved() && (allowedUsers.isEmpty() || allowedUsers.contains(content.getAuthorId())))
-                    .collect(Collectors.toList());
         }
-        return contents;
+
+        List<String> allowedUsers = !contest.getAllowedUsers().isEmpty() ? contest.getAllowedUsers() : new ArrayList<>();
+
+        return contents.stream()
+                .filter(content -> content.isApproved() && (allowedUsers.isEmpty() || allowedUsers.contains(content.getAuthorId())))
+                .collect(Collectors.toList());
     }
 
     public void setContestWinners(String contestId, List<String> winners) {
