@@ -1,7 +1,6 @@
 package it.unicam.cs.ids;
 
 import it.unicam.cs.ids.model.*;
-import jdk.jshell.execution.Util;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ContestManagerTest {
 
@@ -63,20 +62,23 @@ class ContestManagerTest {
         Date yesterday = new Date(currentDate.getTime() - 86400000);
         Date halfDayAgo = new Date(currentDate.getTime() - (86400000 / 2));
 
-        POI poi1 = new POI("ID_1", "POI_1", "First POI", "", true, halfDayAgo, new Coordinate(88, 180));
+        POI poi1 = new POI("POI_1", "POI_1", "First POI", "", true, halfDayAgo, new Coordinate(88, 180));
         UtilClass.getPOIManager().submit(poi1);
 
         ImageManager imageManager = UtilClass.getImageManager();
-        imageManager.submit(new Image("ID_1", "Image_1", "First Image", "Author_1", halfDayAgo, true, "ID_1"));
-        imageManager.submit(new Image("ID_2", "Image_2", "Second Image", "Author_1", halfDayAgo, false, "ID_2"));
-        imageManager.submit(new Image("ID_3", "Image_3", "Third Image", "Author_1", halfDayAgo, false, "ID_3"));
+        imageManager.submit(new Image("ID_1", "Image_1", "First Image", "Author_1", halfDayAgo, true, "POI_1"));
+        imageManager.submit(new Image("ID_2", "Image_2", "Second Image", "Author_1", halfDayAgo, false, "POI_1"));
+        imageManager.submit(new Image("ID_3", "Image_3", "Third Image", "Author_1", halfDayAgo, true, "POI_1"));
+        imageManager.submit(new Image("ID_4", "Image_4", "Fourth Image", "Author_1", halfDayAgo, false, "POI_2"));
 
-        Contest contentContest = new POIContest("1", "POI Contest", "Description", yesterday, currentDate, "user1", "ID_1");
+        Contest contentContest = new POIContest("1", "POI Contest", "Description", yesterday, currentDate, "user1", "POI_1");
         contestManager.submit(contentContest);
 
         List<Content> contents = contestManager.getContentByContest("1", yesterday, currentDate);
 
-        assertEquals(1, contents.size());
+        assertEquals(2, contents.size());
+        assertEquals("ID_1", contents.get(0).getId());
+        assertEquals("ID_3", contents.get(1).getId());
     }
 
     @Test

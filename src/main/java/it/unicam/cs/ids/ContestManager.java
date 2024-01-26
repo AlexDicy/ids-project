@@ -51,14 +51,14 @@ public class ContestManager {
         List<Content> contents = new ArrayList<>();
 
         if (contest instanceof POIContest poiContest) {
-            List<Image> images = UtilClass.getImageManager().getPoiImages(poiContest.getIdPOI());
+            List<Image> images = UtilClass.getImageManager().getPoiImagesInDateRange(poiContest.getIdPOI(), startDate, endDate);
             contents.addAll(images);
         } else {
             contents.addAll(UtilClass.getItineraryManager().getInDateRange(startDate, endDate));
             contents.addAll(UtilClass.getPOIManager().getInDateRange(startDate, endDate));
         }
 
-        List<String> allowedUsers = !contest.getAllowedUsers().isEmpty() ? contest.getAllowedUsers() : new ArrayList<>();
+        List<String> allowedUsers = contest.getAllowedUsers();
 
         return contents.stream()
                 .filter(content -> content.isApproved() && (allowedUsers.isEmpty() || allowedUsers.contains(content.getAuthorId())))
