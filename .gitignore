@@ -1,6 +1,8 @@
+### Visual Paradigm ###
 *vpp.bak_*
 *.vpp.lck
-.idea/
+
+### Gradle ###
 
 .gradle
 build/
@@ -9,10 +11,7 @@ build/
 !**/src/test/**/build/
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+.idea/
 *.iws
 *.iml
 *.ipr
