@@ -1,62 +1,52 @@
-package it.unicam.cs.ids;
+package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.model.Coordinate;
 import it.unicam.cs.ids.model.Municipality;
-import it.unicam.cs.ids.model.POI;
+import it.unicam.cs.ids.model.content.POI;
+import it.unicam.cs.ids.repository.POIRepository;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
+@Service
 public class POIManager implements ContentManager<POI> {
-
     private final Municipality municipality;
-    protected List<POI> poiList = new ArrayList<>();
+    private final POIRepository repository;
 
-    public POIManager(Municipality municipality) {
-        this.municipality = municipality;
+    public POIManager(MunicipalityManager municipalityManager, POIRepository repository) {
+        this.municipality = municipalityManager.getDefaultMunicipality();
+        this.repository = repository;
     }
 
     @Override
     public POI get(String id) {
-        Objects.requireNonNull(id, "Id is not valid");
-        for (POI element : poiList) {
-            if (element.getId().equals(id)) {
-                return element;
-            }
-        }
-        return null;
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public void submit(POI poi) {
-        Objects.requireNonNull(poi, "Invalid poi");
-        poiList.add(poi);
+        repository.save(poi);
     }
 
     @Override
     public void submit(List<POI> content) {
-        Objects.requireNonNull(content, "Invalid poi list");
-        poiList.addAll(content);
+        repository.saveAll(content);
     }
 
     @Override
     public List<POI> getAll() {
-        return new ArrayList<>(poiList);
+        return repository.findAll();
     }
 
     @Override
     public List<POI> find(String query) {
-        Objects.requireNonNull(query, "Query is not valid");
-        List<POI> pois = new ArrayList<>();
-        for (POI element : poiList) {
-            if (element.getName().contains(query) || element.getDescription().contains(query)) {
-                pois.add(element);
-            }
-        }
-        return pois;
+        TextQuery textQuery = TextQuery.queryText(new TextCriteria().matching(query)).sortByScore();
+        return repository.findAllBy(textQuery);
     }
 
     @Override
@@ -64,29 +54,22 @@ public class POIManager implements ContentManager<POI> {
         POI poiToApprove = get(id);
         Objects.requireNonNull(poiToApprove, "POI not found");
         poiToApprove.setApproved(true);
+        repository.save(poiToApprove);
     }
 
     @Override
     public void remove(String id) {
-        Objects.requireNonNull(id, "Id is not valid");
-        poiList.removeIf(poi -> poi.getId().equals(id));
+        repository.deleteById(id);
     }
 
     @Override
     public List<POI> getContentToApprove() {
-        List<POI> toApprove = new ArrayList<>();
-        for (POI poi : poiList) {
-            if (!poi.isApproved()) {
-                toApprove.add(poi);
-            }
-        }
-        return toApprove;
+        return repository.findAllByApproved(false);
     }
 
     @Override
     public List<POI> getInDateRange(Date start, Date end) {
-        Stream<POI> stream = poiList.stream();
-        return stream.filter(poi -> poi.getCreationDate().after(start) && poi.getCreationDate().before(end)).toList();
+        return repository.findAllByCreationDateBetween(start, end);
     }
 
     public List<POI> getInRange(Coordinate fromCoordinate, Coordinate toCoordinate) {
@@ -94,6 +77,7 @@ public class POIManager implements ContentManager<POI> {
             throw new IllegalArgumentException("Invalid latitude or longitude range");
         }
 
+        List<POI> poiList = getAll();
         List<POI> poisInRange = new ArrayList<>();
 
         for (POI element : poiList) {

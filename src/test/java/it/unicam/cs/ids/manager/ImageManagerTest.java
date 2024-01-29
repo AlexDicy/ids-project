@@ -1,8 +1,8 @@
-package it.unicam.cs.ids;
+package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.model.Coordinate;
-import it.unicam.cs.ids.model.Image;
-import it.unicam.cs.ids.model.POI;
+import it.unicam.cs.ids.model.content.Image;
+import it.unicam.cs.ids.model.content.POI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ImageManagerTest {
 
     private DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-    private POI poi1 = new POI("ID_1", "POI_1", "First POI", "", false, formatter.parse("01/01/2020"), new Coordinate(88, 180));
-    private POI poi2 = new POI("ID_2", "POI_2", "Second POI", "", false, formatter.parse("01/01/2020"), new Coordinate(70, 150));
+    private POI poi1 = POI.temporaryCreatePOI("ID_1", "POI_1", "First POI", "", false, formatter.parse("01/01/2020"), new Coordinate(88, 180));
+    private POI poi2 = POI.temporaryCreatePOI("ID_2", "POI_2", "Second POI", "", false, formatter.parse("01/01/2020"), new Coordinate(70, 150));
 
     List<Image> images1;
     List<Image> images2;

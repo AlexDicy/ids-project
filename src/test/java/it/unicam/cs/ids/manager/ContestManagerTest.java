@@ -1,6 +1,10 @@
-package it.unicam.cs.ids;
+package it.unicam.cs.ids.manager;
 
+import it.unicam.cs.ids.UtilClass;
 import it.unicam.cs.ids.model.*;
+import it.unicam.cs.ids.model.content.Content;
+import it.unicam.cs.ids.model.content.Image;
+import it.unicam.cs.ids.model.content.POI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +66,7 @@ class ContestManagerTest {
         Date yesterday = new Date(currentDate.getTime() - 86400000);
         Date halfDayAgo = new Date(currentDate.getTime() - (86400000 / 2));
 
-        POI poi1 = new POI("POI_1", "POI_1", "First POI", "", true, halfDayAgo, new Coordinate(88, 180));
+        POI poi1 = POI.temporaryCreatePOI("POI_1", "POI_1", "First POI", "", true, halfDayAgo, new Coordinate(88, 180));
         UtilClass.getPOIManager().submit(poi1);
 
         ImageManager imageManager = UtilClass.getImageManager();

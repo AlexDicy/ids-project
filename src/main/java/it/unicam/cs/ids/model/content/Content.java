@@ -1,17 +1,22 @@
-package it.unicam.cs.ids.model;
+package it.unicam.cs.ids.model.content;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 
 import java.util.Date;
 
 public abstract class Content {
-    private final String id;
+    @Id
+    private String id;
+    @TextIndexed(weight = 2)
     private final String name;
+    @TextIndexed
     private final String description;
     private boolean approved;
     private final String createdBy;
     private final Date creationDate;
 
-    protected Content(String id, String name, String description, String createdBy, boolean approved, Date creationDate) {
-        this.id = id;
+    protected Content(String name, String description, String createdBy, boolean approved, Date creationDate) {
         this.name = name;
         this.description = description;
         this.approved = approved;

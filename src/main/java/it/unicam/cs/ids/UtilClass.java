@@ -1,5 +1,9 @@
 package it.unicam.cs.ids;
 
+import it.unicam.cs.ids.manager.ImageManager;
+import it.unicam.cs.ids.manager.ItineraryManager;
+import it.unicam.cs.ids.manager.MunicipalityManager;
+import it.unicam.cs.ids.manager.POIManager;
 import it.unicam.cs.ids.model.Coordinate;
 import it.unicam.cs.ids.model.Municipality;
 
@@ -10,6 +14,7 @@ public class UtilClass {
     private static ImageManager imageManager;
     private static POIManager poiManager;
     private static ItineraryManager itineraryManager;
+    private static MunicipalityManager municipalityManager;
     private static Municipality municipality;
 
     public static ImageManager getImageManager() {
@@ -21,7 +26,7 @@ public class UtilClass {
 
     public static POIManager getPOIManager() {
         if (poiManager == null) {
-            poiManager = new POIManager(getMunicipality());
+            poiManager = new POIManager(getMunicipalityManager(), null);
         }
         return poiManager;
     }
@@ -33,6 +38,13 @@ public class UtilClass {
         return itineraryManager;
     }
 
+    public static MunicipalityManager getMunicipalityManager() {
+        if (municipalityManager == null) {
+            municipalityManager = new MunicipalityManager(null);
+        }
+        return municipalityManager;
+    }
+
     public static Municipality getMunicipality() {
         if (municipality == null) {
             List<Coordinate> perimeter = new ArrayList<>();
@@ -41,7 +53,7 @@ public class UtilClass {
             perimeter.add(new Coordinate(20, 140));
             perimeter.add(new Coordinate(120, 170));
             perimeter.add(new Coordinate(120, 10));
-            municipality = new Municipality("TestMunicipality", perimeter);
+//            municipality = new Municipality("TestMunicipality", perimeter);
         }
         return municipality;
     }

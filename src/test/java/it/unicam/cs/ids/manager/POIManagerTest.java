@@ -1,8 +1,8 @@
-package it.unicam.cs.ids;
+package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.model.Coordinate;
 import it.unicam.cs.ids.model.Municipality;
-import it.unicam.cs.ids.model.POI;
+import it.unicam.cs.ids.model.content.POI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,10 +20,10 @@ public class POIManagerTest {
     @BeforeEach
     void setup() {
         list.clear();
-        list.add(new POI("ID_1", "POI_1", "First POI", "", false, new Date(), new Coordinate(88, 180)));
-        list.add(new POI("ID_2", "POI_2", "Second POI", "", false, new Date(), new Coordinate(70, 150)));
-        list.add(new POI("ID_3", "POI_3", "Third POI", "", false, new Date(), new Coordinate(68, 178)));
-        list.add(new POI("ID_4", "POI_4", "Fourth POI", "", false, new Date(), new Coordinate(90, 180)));
+        list.add(POI.temporaryCreatePOI("ID_1", "POI_1", "First POI", "", false, new Date(), new Coordinate(88, 180)));
+        list.add(POI.temporaryCreatePOI("ID_2", "POI_2", "Second POI", "", false, new Date(), new Coordinate(70, 150)));
+        list.add(POI.temporaryCreatePOI("ID_3", "POI_3", "Third POI", "", false, new Date(), new Coordinate(68, 178)));
+        list.add(POI.temporaryCreatePOI("ID_4", "POI_4", "Fourth POI", "", false, new Date(), new Coordinate(90, 180)));
         List<Coordinate> perimeter = new ArrayList<>();
         perimeter.add(new Coordinate(10, 10));
         perimeter.add(new Coordinate(30, 100));
@@ -51,7 +51,7 @@ public class POIManagerTest {
         POIManager manager = new POIManager(municipality);
         manager.poiList = list;
         assertEquals(4, manager.getAll().size());
-        POI p = new POI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
+        POI p = POI.temporaryCreatePOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
         manager.submit(p);
         assertEquals(5, manager.getAll().size());
         assertEquals(p, manager.get("ID_5"));
@@ -63,8 +63,8 @@ public class POIManagerTest {
         manager.poiList = list;
         assertEquals(4, manager.getAll().size());
         List<POI> newList = new ArrayList<>();
-        newList.add(new POI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180)));
-        newList.add(new POI("ID_6", "POI_6", "Sixth POI", "", false, new Date(), new Coordinate(90, 180)));
+        newList.add(POI.temporaryCreatePOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180)));
+        newList.add(POI.temporaryCreatePOI("ID_6", "POI_6", "Sixth POI", "", false, new Date(), new Coordinate(90, 180)));
         manager.submit(newList);
         assertEquals(6, manager.getAll().size());
         assertEquals(newList.get(0), manager.get("ID_5"));
@@ -182,11 +182,11 @@ public class POIManagerTest {
         Date today = new Date();
         Date yesterday = new Date(today.getTime() - 86400000L);
         Date tomorrow = new Date(today.getTime() + 86400000L);
-        POI poi1 = new POI("ID_1", "POI_1", "First POI", "", false, yesterday, new Coordinate(88, 180));
-        POI poi2 = new POI("ID_2", "POI_2", "Second POI", "", false, new Date(today.getTime() - 23 * 60 * 60 * 1000), new Coordinate(70, 150));
-        POI poi3 = new POI("ID_2", "POI_2", "Second POI", "", false, today, new Coordinate(70, 150));
-        POI poi4 = new POI("ID_3", "POI_3", "Third POI", "", false, new Date(today.getTime() + 23 * 60 * 60 * 1000), new Coordinate(68, 178));
-        POI poi5 = new POI("ID_3", "POI_3", "Third POI", "", false, tomorrow, new Coordinate(68, 178));
+        POI poi1 = POI.temporaryCreatePOI("ID_1", "POI_1", "First POI", "", false, yesterday, new Coordinate(88, 180));
+        POI poi2 = POI.temporaryCreatePOI("ID_2", "POI_2", "Second POI", "", false, new Date(today.getTime() - 23 * 60 * 60 * 1000), new Coordinate(70, 150));
+        POI poi3 = POI.temporaryCreatePOI("ID_2", "POI_2", "Second POI", "", false, today, new Coordinate(70, 150));
+        POI poi4 = POI.temporaryCreatePOI("ID_3", "POI_3", "Third POI", "", false, new Date(today.getTime() + 23 * 60 * 60 * 1000), new Coordinate(68, 178));
+        POI poi5 = POI.temporaryCreatePOI("ID_3", "POI_3", "Third POI", "", false, tomorrow, new Coordinate(68, 178));
         manager.poiList.addAll(List.of(poi1, poi2, poi3, poi4, poi5));
         assertEquals(5, manager.getAll().size());
         assertEquals(1, manager.getInDateRange(yesterday, today).size());

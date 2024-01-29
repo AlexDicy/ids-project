@@ -1,6 +1,6 @@
-package it.unicam.cs.ids;
+package it.unicam.cs.ids.manager;
 
-import it.unicam.cs.ids.model.Content;
+import it.unicam.cs.ids.model.content.Content;
 
 import java.util.Date;
 import java.util.List;

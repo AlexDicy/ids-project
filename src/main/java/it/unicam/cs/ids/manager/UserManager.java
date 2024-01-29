@@ -1,4 +1,4 @@
-package it.unicam.cs.ids;
+package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.model.user.User;
 

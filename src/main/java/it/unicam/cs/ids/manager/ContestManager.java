@@ -1,8 +1,9 @@
-package it.unicam.cs.ids;
+package it.unicam.cs.ids.manager;
 
-import it.unicam.cs.ids.model.Content;
+import it.unicam.cs.ids.UtilClass;
+import it.unicam.cs.ids.model.content.Content;
 import it.unicam.cs.ids.model.Contest;
-import it.unicam.cs.ids.model.Image;
+import it.unicam.cs.ids.model.content.Image;
 import it.unicam.cs.ids.model.POIContest;
 
 import java.util.ArrayList;

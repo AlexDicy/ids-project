@@ -1,6 +1,6 @@
-package it.unicam.cs.ids;
+package it.unicam.cs.ids.manager;
 
-import it.unicam.cs.ids.model.Image;
+import it.unicam.cs.ids.model.content.Image;
 
 import java.util.*;
 import java.util.stream.Collectors;
