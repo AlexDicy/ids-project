@@ -5,7 +5,7 @@ import it.unicam.cs.ids.repository.ItineraryRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ItineraryManager extends ContentManager<Itinerary> {
+public class ItineraryManager extends ContentManager<Itinerary, ItineraryRepository> {
 
     public ItineraryManager(ItineraryRepository repository) {
         super(repository);

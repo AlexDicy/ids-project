@@ -6,11 +6,10 @@ import it.unicam.cs.ids.model.content.POI;
 import it.unicam.cs.ids.repository.POIRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class POIManager extends ContentManager<POI> {
+public class POIManager extends ContentManager<POI, POIRepository> {
     private final Municipality municipality;
 
     public POIManager(MunicipalityManager municipalityManager, POIRepository repository) {
@@ -23,19 +22,7 @@ public class POIManager extends ContentManager<POI> {
             throw new IllegalArgumentException("Invalid latitude or longitude range");
         }
 
-        List<POI> poiList = getAll();
-        List<POI> poisInRange = new ArrayList<>();
-
-        for (POI element : poiList) {
-            double latitude = element.getLatitude();
-            double longitude = element.getLongitude();
-
-            if (latitude >= fromCoordinate.latitude() && latitude <= toCoordinate.latitude() && longitude >= fromCoordinate.longitude() && longitude <= toCoordinate.longitude()) {
-                poisInRange.add(element);
-            }
-        }
-
-        return poisInRange;
+        return repository.findAllByCoordinatesRange(fromCoordinate.latitude(), toCoordinate.latitude(), fromCoordinate.longitude(), toCoordinate.longitude());
     }
 
     /**

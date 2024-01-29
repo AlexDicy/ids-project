@@ -5,7 +5,7 @@ import it.unicam.cs.ids.repository.ImageRepository;
 
 import java.util.*;
 
-public class ImageManager extends ContentManager<Image> {
+public class ImageManager extends ContentManager<Image, ImageRepository> {
     /**
      * The list of all the images indexed by POI id.
      */

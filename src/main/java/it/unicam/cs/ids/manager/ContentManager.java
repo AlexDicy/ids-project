@@ -2,18 +2,16 @@ package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.model.content.Content;
 import it.unicam.cs.ids.repository.ContentRepository;
-import org.springframework.data.mongodb.core.query.TextCriteria;
-import org.springframework.data.mongodb.core.query.TextQuery;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class ContentManager<C extends Content> {
+public abstract class ContentManager<C extends Content, R extends ContentRepository<C>> {
 
-    private final ContentRepository<C> repository;
+    protected final R repository;
 
-    public ContentManager(ContentRepository<C> repository) {
+    public ContentManager(R repository) {
         this.repository = repository;
     }
 
@@ -34,8 +32,7 @@ public abstract class ContentManager<C extends Content> {
     }
 
     public List<C> find(String keywords) {
-        TextQuery textQuery = TextQuery.queryText(new TextCriteria().matching(keywords)).sortByScore();
-        return repository.findAllBy(textQuery);
+        return repository.findAllByText(keywords);
     }
 
     public void approve(String id) {

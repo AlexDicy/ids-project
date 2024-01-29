@@ -9,13 +9,13 @@ import java.util.List;
 public class Itinerary extends Content {
     private final List<POI> poiList;
 
-    private Itinerary(String name, String description, String createdBy, boolean approved, Date cretionDate, List<POI> poiList) {
-        super(name, description, createdBy, approved, cretionDate);
+    public Itinerary(String name, String description, String createdBy, boolean approved, List<POI> poiList) {
+        super(name, description, createdBy, approved);
         this.poiList = poiList;
     }
 
     public static Itinerary temporaryCreateItinerary(String id, String name, String description, String createdBy, boolean approved, Date cretionDate, List<POI> poiList) {
-        return new Itinerary(name, description, createdBy, approved, cretionDate, poiList);
+        return new Itinerary(name, description, createdBy, approved, poiList);
     }
 
     public List<POI> getPoiList() {

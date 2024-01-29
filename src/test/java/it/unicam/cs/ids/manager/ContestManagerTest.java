@@ -73,10 +73,10 @@ class ContestManagerTest {
         UtilClass.getPOIManager().submit(poi1);
 
         ImageManager imageManager = UtilClass.getImageManager();
-        imageManager.submit(new Image("ID_1", "Image_1", "First Image", "Author_1", halfDayAgo, true, "POI_1"));
-        imageManager.submit(new Image("ID_2", "Image_2", "Second Image", "Author_1", halfDayAgo, false, "POI_1"));
-        imageManager.submit(new Image("ID_3", "Image_3", "Third Image", "Author_1", halfDayAgo, true, "POI_1"));
-        imageManager.submit(new Image("ID_4", "Image_4", "Fourth Image", "Author_1", halfDayAgo, false, "POI_2"));
+        imageManager.submit(Image.temporaryCreateImage("ID_1", "Image_1", "First Image", "Author_1", halfDayAgo, true, "POI_1"));
+        imageManager.submit(Image.temporaryCreateImage("ID_2", "Image_2", "Second Image", "Author_1", halfDayAgo, false, "POI_1"));
+        imageManager.submit(Image.temporaryCreateImage("ID_3", "Image_3", "Third Image", "Author_1", halfDayAgo, true, "POI_1"));
+        imageManager.submit(Image.temporaryCreateImage("ID_4", "Image_4", "Fourth Image", "Author_1", halfDayAgo, false, "POI_2"));
 
         Contest contentContest = new POIContest("1", "POI Contest", "Description", yesterday, currentDate, "user1", "POI_1");
         contestManager.submit(contentContest);

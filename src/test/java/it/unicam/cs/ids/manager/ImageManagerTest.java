@@ -30,17 +30,17 @@ public class ImageManagerTest {
     @BeforeEach
     void setup() throws ParseException {
         images1 = new ArrayList<>();
-        images1.add(new Image("ID_1", "Image_1", "First Image", "Author_1", formatter.parse("01/01/2020"), false, "ID_1"));
-        images1.add(new Image("ID_2", "Image_2", "Second Image", "Author_2", formatter.parse("02/02/2020"), false, "ID_1"));
-        images1.add(new Image("ID_3", "Image_3", "Third Image XY", "Author_3", formatter.parse("03/03/2020"), false, "ID_1"));
-        images1.add(new Image("ID_4", "Image_4", "Fourth Image", "Author_4", formatter.parse("04/04/2020"), false, "ID_1"));
-        images1.add(new Image("ID_5", "Image_5", "Fifth Image", "Author_5", formatter.parse("05/05/2020"), false, "ID_1"));
+        images1.add(Image.temporaryCreateImage("ID_1", "Image_1", "First Image", "Author_1", formatter.parse("01/01/2020"), false, "ID_1"));
+        images1.add(Image.temporaryCreateImage("ID_2", "Image_2", "Second Image", "Author_2", formatter.parse("02/02/2020"), false, "ID_1"));
+        images1.add(Image.temporaryCreateImage("ID_3", "Image_3", "Third Image XY", "Author_3", formatter.parse("03/03/2020"), false, "ID_1"));
+        images1.add(Image.temporaryCreateImage("ID_4", "Image_4", "Fourth Image", "Author_4", formatter.parse("04/04/2020"), false, "ID_1"));
+        images1.add(Image.temporaryCreateImage("ID_5", "Image_5", "Fifth Image", "Author_5", formatter.parse("05/05/2020"), false, "ID_1"));
         images2 = new ArrayList<>();
-        images2.add(new Image("ID_6", "Image_6", "Sixth Image", "Author_6", formatter.parse("01/01/1995"), false, "ID_2"));
-        images2.add(new Image("ID_7", "Image_7", "Seventh Image XYZ", "Author_7", formatter.parse("01/01/2007"), false, "ID_2"));
-        images2.add(new Image("ID_8", "Image_8", "Eighth Image", "Author_8", formatter.parse("01/01/2019"), false, "ID_2"));
-        images2.add(new Image("ID_9", "Image_9", "Ninth Image", "Author_9", formatter.parse("01/01/2020"), false, "ID_2"));
-        images2.add(new Image("ID_10", "Image_10", "Tenth Image", "Author_10", formatter.parse("01/01/2021"), false, "ID_2"));
+        images2.add(Image.temporaryCreateImage("ID_6", "Image_6", "Sixth Image", "Author_6", formatter.parse("01/01/1995"), false, "ID_2"));
+        images2.add(Image.temporaryCreateImage("ID_7", "Image_7", "Seventh Image XYZ", "Author_7", formatter.parse("01/01/2007"), false, "ID_2"));
+        images2.add(Image.temporaryCreateImage("ID_8", "Image_8", "Eighth Image", "Author_8", formatter.parse("01/01/2019"), false, "ID_2"));
+        images2.add(Image.temporaryCreateImage("ID_9", "Image_9", "Ninth Image", "Author_9", formatter.parse("01/01/2020"), false, "ID_2"));
+        images2.add(Image.temporaryCreateImage("ID_10", "Image_10", "Tenth Image", "Author_10", formatter.parse("01/01/2021"), false, "ID_2"));
     }
 
     private ImageManager getImageManager() {
@@ -72,7 +72,7 @@ public class ImageManagerTest {
         ImageManager manager = getImageManager();
         assertEquals(10, manager.getAll().size());
         assertNull(manager.get("ID_11"));
-        manager.submit(new Image("ID_11", "Image_11", "Eleventh Image", "Author_11", new Date(), false, "ID_1"));
+        manager.submit(Image.temporaryCreateImage("ID_11", "Image_11", "Eleventh Image", "Author_11", new Date(), false, "ID_1"));
         assertEquals(11, manager.getAll().size());
         assertEquals("ID_11", manager.get("ID_11").getId());
     }
