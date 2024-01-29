@@ -2,9 +2,9 @@ package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.UtilClass;
 import it.unicam.cs.ids.model.content.Content;
-import it.unicam.cs.ids.model.Contest;
+import it.unicam.cs.ids.model.contest.Contest;
 import it.unicam.cs.ids.model.content.Image;
-import it.unicam.cs.ids.model.POIContest;
+import it.unicam.cs.ids.model.contest.POIContest;
 
 import java.util.ArrayList;
 import java.util.Date;

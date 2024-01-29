@@ -5,6 +5,9 @@ import it.unicam.cs.ids.model.*;
 import it.unicam.cs.ids.model.content.Content;
 import it.unicam.cs.ids.model.content.Image;
 import it.unicam.cs.ids.model.content.POI;
+import it.unicam.cs.ids.model.contest.ConcreteContest;
+import it.unicam.cs.ids.model.contest.Contest;
+import it.unicam.cs.ids.model.contest.POIContest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

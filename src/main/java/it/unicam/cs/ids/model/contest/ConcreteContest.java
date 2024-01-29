@@ -1,4 +1,4 @@
-package it.unicam.cs.ids.model;
+package it.unicam.cs.ids.model.contest;
 
 import java.util.ArrayList;
 import java.util.Date;

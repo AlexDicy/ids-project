@@ -1,5 +1,7 @@
-package it.unicam.cs.ids.model;
+package it.unicam.cs.ids.model.contest;
 
+import it.unicam.cs.ids.model.contest.ConcreteContest;
+import it.unicam.cs.ids.model.contest.Contest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
