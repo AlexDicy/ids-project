@@ -1,6 +1,6 @@
 package it.unicam.cs.ids;
 
-import it.unicam.cs.ids.model.User;
+import it.unicam.cs.ids.model.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
