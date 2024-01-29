@@ -1,27 +1,59 @@
 package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.model.content.Content;
+import it.unicam.cs.ids.repository.ContentRepository;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-public interface ContentManager<C extends Content> {
+public abstract class ContentManager<C extends Content> {
 
-    C get(String id);
+    private final ContentRepository<C> repository;
 
-    void submit(C content);
+    public ContentManager(ContentRepository<C> repository) {
+        this.repository = repository;
+    }
 
-    void submit(List<C> content);
+    public C get(String id) {
+        return repository.findById(id).orElse(null);
+    }
 
-    List<C> getAll();
+    public void submit(C content) {
+        repository.save(content);
+    }
 
-    List<C> find(String keywords);
+    public void submit(List<C> content) {
+        repository.saveAll(content);
+    }
 
-    void approve(String id);
+    public List<C> getAll() {
+        return repository.findAll();
+    }
 
-    void remove(String id);
+    public List<C> find(String keywords) {
+        TextQuery textQuery = TextQuery.queryText(new TextCriteria().matching(keywords)).sortByScore();
+        return repository.findAllBy(textQuery);
+    }
 
-    List<C> getContentToApprove();
+    public void approve(String id) {
+        C contentToApprove = get(id);
+        Objects.requireNonNull(contentToApprove, "Content not found");
+        contentToApprove.setApproved(true);
+        repository.save(contentToApprove);
+    }
 
-    List<C> getInDateRange(Date start, Date end);
+    public void remove(String id) {
+        repository.deleteById(id);
+    }
+
+    public List<C> getContentToApprove() {
+        return repository.findAllByApproved(false);
+    }
+
+    public List<C> getInDateRange(Date start, Date end) {
+        return repository.findAllByCreationDateBetween(start, end);
+    }
 }

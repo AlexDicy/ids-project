@@ -19,7 +19,7 @@ public class UtilClass {
 
     public static ImageManager getImageManager() {
         if (imageManager == null) {
-            imageManager = new ImageManager();
+            imageManager = new ImageManager(null);
         }
         return imageManager;
     }
@@ -33,7 +33,7 @@ public class UtilClass {
 
     public static ItineraryManager getItineraryManager() {
         if (itineraryManager == null) {
-            itineraryManager = new ItineraryManager();
+            itineraryManager = new ItineraryManager(null);
         }
         return itineraryManager;
     }

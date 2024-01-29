@@ -27,8 +27,8 @@ public class ItineraryManagerTest {
         itineraryList2.add(POI.temporaryCreatePOI("POI_ID_3", "POI_3", "Third POI", "", false, new Date(), new Coordinate(90, 180)));
         itineraryList2.add(POI.temporaryCreatePOI("POI_ID_4", "POI_4", "Fourth POI", "", false, new Date(), new Coordinate(90, 180)));
         itineraryList2.add(poi2);
-        list.add(new Itinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(), itineraryList1));
-        list.add(new Itinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, new Date(), itineraryList2));
+        list.add(Itinerary.temporaryCreateItinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(), itineraryList1));
+        list.add(Itinerary.temporaryCreateItinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, new Date(), itineraryList2));
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ItineraryManagerTest {
         manager.itineraryList = list;
         assertEquals(2, manager.getAll().size());
         POI p = POI.temporaryCreatePOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
-        Itinerary it = new Itinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
+        Itinerary it = Itinerary.temporaryCreateItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
         it.addPoi(p);
         manager.submit(it);
         assertEquals(3, manager.getAll().size());
@@ -68,8 +68,8 @@ public class ItineraryManagerTest {
         assertEquals(2, manager.getAll().size());
         POI p = POI.temporaryCreatePOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
         POI p2 = POI.temporaryCreatePOI("ID_6", "POI_6", "Sixth POI", "", false, new Date(), new Coordinate(90, 180));
-        Itinerary it = new Itinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
-        Itinerary it2 = new Itinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, new Date(), new ArrayList<>());
+        Itinerary it = Itinerary.temporaryCreateItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
+        Itinerary it2 = Itinerary.temporaryCreateItinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, new Date(), new ArrayList<>());
         it.addPoi(p);
         it2.addPoi(p2);
         List<Itinerary> itineraries = new ArrayList<>();
@@ -140,13 +140,13 @@ public class ItineraryManagerTest {
         Date today = new Date();
         Date yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
         Date tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-        Itinerary it1 = new Itinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(today.getTime() - 48 * 60 * 60 * 1000), new ArrayList<>());
-        Itinerary it2 = new Itinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, yesterday, new ArrayList<>());
-        Itinerary it3 = new Itinerary("ID_3", "ITIN_3", "Itinerary 3", "", false, new Date(today.getTime() - 10 * 60 * 60 * 1000), new ArrayList<>());
-        Itinerary it4 = new Itinerary("ID_4", "ITIN_4", "Itinerary 4", "", false, today, new ArrayList<>());
-        Itinerary it5 = new Itinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(today.getTime() + 10 * 60 * 60 * 1000), new ArrayList<>());
-        Itinerary it6 = new Itinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, tomorrow, new ArrayList<>());
-        Itinerary it7 = new Itinerary("ID_5", "ITIN_5", "Itinerary 7", "", false, new Date(today.getTime() + 48 * 60 * 60 * 1000), new ArrayList<>());
+        Itinerary it1 = Itinerary.temporaryCreateItinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(today.getTime() - 48 * 60 * 60 * 1000), new ArrayList<>());
+        Itinerary it2 = Itinerary.temporaryCreateItinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, yesterday, new ArrayList<>());
+        Itinerary it3 = Itinerary.temporaryCreateItinerary("ID_3", "ITIN_3", "Itinerary 3", "", false, new Date(today.getTime() - 10 * 60 * 60 * 1000), new ArrayList<>());
+        Itinerary it4 = Itinerary.temporaryCreateItinerary("ID_4", "ITIN_4", "Itinerary 4", "", false, today, new ArrayList<>());
+        Itinerary it5 = Itinerary.temporaryCreateItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(today.getTime() + 10 * 60 * 60 * 1000), new ArrayList<>());
+        Itinerary it6 = Itinerary.temporaryCreateItinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, tomorrow, new ArrayList<>());
+        Itinerary it7 = Itinerary.temporaryCreateItinerary("ID_5", "ITIN_5", "Itinerary 7", "", false, new Date(today.getTime() + 48 * 60 * 60 * 1000), new ArrayList<>());
         manager.submit(List.of(it1, it2, it3, it4, it5, it6, it7));
 
         assertEquals(7, manager.getAll().size());

@@ -1,14 +1,21 @@
 package it.unicam.cs.ids.model.content;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 import java.util.List;
 
+@Document(collection = "itineraries")
 public class Itinerary extends Content {
     private final List<POI> poiList;
 
-    public Itinerary(String id, String name, String description, String createdBy, boolean approved, Date cretionDate, List<POI> poiList) {
+    private Itinerary(String name, String description, String createdBy, boolean approved, Date cretionDate, List<POI> poiList) {
         super(name, description, createdBy, approved, cretionDate);
         this.poiList = poiList;
+    }
+
+    public static Itinerary temporaryCreateItinerary(String id, String name, String description, String createdBy, boolean approved, Date cretionDate, List<POI> poiList) {
+        return new Itinerary(name, description, createdBy, approved, cretionDate, poiList);
     }
 
     public List<POI> getPoiList() {
