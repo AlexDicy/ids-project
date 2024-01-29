@@ -1,9 +1,8 @@
 package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.UtilClass;
-import it.unicam.cs.ids.model.*;
+import it.unicam.cs.ids.model.Coordinate;
 import it.unicam.cs.ids.model.content.Content;
-import it.unicam.cs.ids.model.content.Image;
 import it.unicam.cs.ids.model.content.POI;
 import it.unicam.cs.ids.model.contest.ConcreteContest;
 import it.unicam.cs.ids.model.contest.Contest;
@@ -69,14 +68,14 @@ class ContestManagerTest {
         Date yesterday = new Date(currentDate.getTime() - 86400000);
         Date halfDayAgo = new Date(currentDate.getTime() - (86400000 / 2));
 
-        POI poi1 = POI.temporaryCreatePOI("POI_1", "POI_1", "First POI", "", true, halfDayAgo, new Coordinate(88, 180));
+        POI poi1 = POIManagerTest.createPOI("POI_1", "POI_1", "First POI", "", true, halfDayAgo, new Coordinate(88, 180));
         UtilClass.getPOIManager().submit(poi1);
 
         ImageManager imageManager = UtilClass.getImageManager();
-        imageManager.submit(Image.temporaryCreateImage("ID_1", "Image_1", "First Image", "Author_1", halfDayAgo, true, "POI_1"));
-        imageManager.submit(Image.temporaryCreateImage("ID_2", "Image_2", "Second Image", "Author_1", halfDayAgo, false, "POI_1"));
-        imageManager.submit(Image.temporaryCreateImage("ID_3", "Image_3", "Third Image", "Author_1", halfDayAgo, true, "POI_1"));
-        imageManager.submit(Image.temporaryCreateImage("ID_4", "Image_4", "Fourth Image", "Author_1", halfDayAgo, false, "POI_2"));
+        imageManager.submit(ImageManagerTest.createImage("ID_1", "Image_1", "First Image", "Author_1", halfDayAgo, true, "POI_1"));
+        imageManager.submit(ImageManagerTest.createImage("ID_2", "Image_2", "Second Image", "Author_1", halfDayAgo, false, "POI_1"));
+        imageManager.submit(ImageManagerTest.createImage("ID_3", "Image_3", "Third Image", "Author_1", halfDayAgo, true, "POI_1"));
+        imageManager.submit(ImageManagerTest.createImage("ID_4", "Image_4", "Fourth Image", "Author_1", halfDayAgo, false, "POI_2"));
 
         Contest contentContest = new POIContest("1", "POI Contest", "Description", yesterday, currentDate, "user1", "POI_1");
         contestManager.submit(contentContest);

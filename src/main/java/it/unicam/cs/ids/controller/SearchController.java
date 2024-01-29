@@ -36,11 +36,11 @@ public class SearchController {
         List<Itinerary> itineraries = itineraryManager.find(query);
         contents.addAll(pois);
         contents.addAll(itineraries);
-        contents.sort((o1, o2) -> {
-            if (Objects.equals(o1.getSearchScore(), o2.getSearchScore())) {
+        contents.sort((c1, c2) -> {
+            if (Objects.equals(c1.getSearchScore(), c2.getSearchScore())) {
                 return 0;
             }
-            return o1.getSearchScore() > o2.getSearchScore() ? -1 : 1;
+            return c1.getSearchScore() > c2.getSearchScore() ? -1 : 1;
         });
         return contents;
     }

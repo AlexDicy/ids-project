@@ -20,21 +20,24 @@ public class ItineraryManagerTest {
     void setup() {
         list.clear();
         List<POI> itineraryList1 = new ArrayList<>();
-        itineraryList1.add(POI.temporaryCreatePOI("POI_ID_1", "POI_1", "First POI", "", false, new Date(), new Coordinate(90, 180)));
-        POI poi2 = POI.temporaryCreatePOI("POI_ID_2", "POI_2", "Second POI", "", false, new Date(), new Coordinate(90, 180));
+        itineraryList1.add(POIManagerTest.createPOI("POI_ID_1", "POI_1", "First POI", "", false, new Date(), new Coordinate(90, 180)));
+        POI poi2 = POIManagerTest.createPOI("POI_ID_2", "POI_2", "Second POI", "", false, new Date(), new Coordinate(90, 180));
         itineraryList1.add(poi2);
         List<POI> itineraryList2 = new ArrayList<>();
-        itineraryList2.add(POI.temporaryCreatePOI("POI_ID_3", "POI_3", "Third POI", "", false, new Date(), new Coordinate(90, 180)));
-        itineraryList2.add(POI.temporaryCreatePOI("POI_ID_4", "POI_4", "Fourth POI", "", false, new Date(), new Coordinate(90, 180)));
+        itineraryList2.add(POIManagerTest.createPOI("POI_ID_3", "POI_3", "Third POI", "", false, new Date(), new Coordinate(90, 180)));
+        itineraryList2.add(POIManagerTest.createPOI("POI_ID_4", "POI_4", "Fourth POI", "", false, new Date(), new Coordinate(90, 180)));
         itineraryList2.add(poi2);
-        list.add(Itinerary.temporaryCreateItinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(), itineraryList1));
-        list.add(Itinerary.temporaryCreateItinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, new Date(), itineraryList2));
+        list.add(createItinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(), itineraryList1));
+        list.add(createItinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, new Date(), itineraryList2));
+    }
+
+    protected static Itinerary createItinerary(String id, String name, String description, String createdBy, boolean approved, Date date, List<POI> poiList) {
+        return new Itinerary( name, description, null, approved, poiList);
     }
 
     @Test
     void shouldGet() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = list;
+        ItineraryManager manager = new ItineraryManager(null);
         assertEquals(list.get(0), manager.get("ID_1"));
         assertNotEquals(list.get(0), manager.get("ID_11"));
         assertNull(manager.get("ID_9"));
@@ -50,11 +53,10 @@ public class ItineraryManagerTest {
 
     @Test
     void shouldSubmit() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = list;
+        ItineraryManager manager = new ItineraryManager(null);
         assertEquals(2, manager.getAll().size());
-        POI p = POI.temporaryCreatePOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
-        Itinerary it = Itinerary.temporaryCreateItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
+        POI p = POIManagerTest.createPOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
+        Itinerary it = createItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
         it.addPoi(p);
         manager.submit(it);
         assertEquals(3, manager.getAll().size());
@@ -63,13 +65,12 @@ public class ItineraryManagerTest {
 
     @Test
     void shouldSubmitList() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = list;
+        ItineraryManager manager = new ItineraryManager(null);
         assertEquals(2, manager.getAll().size());
-        POI p = POI.temporaryCreatePOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
-        POI p2 = POI.temporaryCreatePOI("ID_6", "POI_6", "Sixth POI", "", false, new Date(), new Coordinate(90, 180));
-        Itinerary it = Itinerary.temporaryCreateItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
-        Itinerary it2 = Itinerary.temporaryCreateItinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, new Date(), new ArrayList<>());
+        POI p = POIManagerTest.createPOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
+        POI p2 = POIManagerTest.createPOI("ID_6", "POI_6", "Sixth POI", "", false, new Date(), new Coordinate(90, 180));
+        Itinerary it = createItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
+        Itinerary it2 = createItinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, new Date(), new ArrayList<>());
         it.addPoi(p);
         it2.addPoi(p2);
         List<Itinerary> itineraries = new ArrayList<>();
@@ -82,15 +83,13 @@ public class ItineraryManagerTest {
 
     @Test
     void shouldGetAll() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = list;
+        ItineraryManager manager = new ItineraryManager(null);
         assertEquals(2, manager.getAll().size());
     }
 
     @Test
     void shouldFind() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = list;
+        ItineraryManager manager = new ItineraryManager(null);
         List<Itinerary> retrieved = manager.find("Itinerary 2");
         assertEquals(1, retrieved.size());
         assertEquals(list.get(1), retrieved.get(0));
@@ -98,8 +97,7 @@ public class ItineraryManagerTest {
 
     @Test
     void shouldApprove() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = list;
+        ItineraryManager manager = new ItineraryManager(null);
         assertFalse(manager.get("ID_1").isApproved());
         assertFalse(manager.get("ID_2").isApproved());
         manager.approve("ID_1");
@@ -109,8 +107,7 @@ public class ItineraryManagerTest {
 
     @Test
     void shouldRemove() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = list;
+        ItineraryManager manager = new ItineraryManager(null);
         assertEquals(2, manager.getAll().size());
         manager.remove("ID_1");
         assertEquals(1, manager.getAll().size());
@@ -119,8 +116,7 @@ public class ItineraryManagerTest {
 
     @Test
     void shouldGetContentToApprove() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = list;
+        ItineraryManager manager = new ItineraryManager(null);
         assertEquals(2, manager.getAll().size());
         assertEquals(2, manager.getContentToApprove().size());
 
@@ -135,18 +131,17 @@ public class ItineraryManagerTest {
 
     @Test
     void shouldReturnContentsBetweenDates() {
-        ItineraryManager manager = new ItineraryManager();
-        manager.itineraryList = new ArrayList<>();
+        ItineraryManager manager = new ItineraryManager(null);
         Date today = new Date();
         Date yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
         Date tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
-        Itinerary it1 = Itinerary.temporaryCreateItinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(today.getTime() - 48 * 60 * 60 * 1000), new ArrayList<>());
-        Itinerary it2 = Itinerary.temporaryCreateItinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, yesterday, new ArrayList<>());
-        Itinerary it3 = Itinerary.temporaryCreateItinerary("ID_3", "ITIN_3", "Itinerary 3", "", false, new Date(today.getTime() - 10 * 60 * 60 * 1000), new ArrayList<>());
-        Itinerary it4 = Itinerary.temporaryCreateItinerary("ID_4", "ITIN_4", "Itinerary 4", "", false, today, new ArrayList<>());
-        Itinerary it5 = Itinerary.temporaryCreateItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(today.getTime() + 10 * 60 * 60 * 1000), new ArrayList<>());
-        Itinerary it6 = Itinerary.temporaryCreateItinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, tomorrow, new ArrayList<>());
-        Itinerary it7 = Itinerary.temporaryCreateItinerary("ID_5", "ITIN_5", "Itinerary 7", "", false, new Date(today.getTime() + 48 * 60 * 60 * 1000), new ArrayList<>());
+        Itinerary it1 = createItinerary("ID_1", "ITIN_1", "Itinerary 1", "", false, new Date(today.getTime() - 48 * 60 * 60 * 1000), new ArrayList<>());
+        Itinerary it2 = createItinerary("ID_2", "ITIN_2", "Itinerary 2", "", false, yesterday, new ArrayList<>());
+        Itinerary it3 = createItinerary("ID_3", "ITIN_3", "Itinerary 3", "", false, new Date(today.getTime() - 10 * 60 * 60 * 1000), new ArrayList<>());
+        Itinerary it4 = createItinerary("ID_4", "ITIN_4", "Itinerary 4", "", false, today, new ArrayList<>());
+        Itinerary it5 = createItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(today.getTime() + 10 * 60 * 60 * 1000), new ArrayList<>());
+        Itinerary it6 = createItinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, tomorrow, new ArrayList<>());
+        Itinerary it7 = createItinerary("ID_5", "ITIN_5", "Itinerary 7", "", false, new Date(today.getTime() + 48 * 60 * 60 * 1000), new ArrayList<>());
         manager.submit(List.of(it1, it2, it3, it4, it5, it6, it7));
 
         assertEquals(7, manager.getAll().size());
