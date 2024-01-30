@@ -41,4 +41,14 @@ public class POIController {
     public List<POI> getInRange(@RequestBody @Valid GetInAreaDTO dto) {
         return manager.getInRange(dto.start(), dto.end());
     }
+
+    @GetMapping("/approve/{id}")
+    public void approve(@PathVariable String id) {
+        manager.approve(id);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable String id) {
+        manager.remove(id);
+    }
 }

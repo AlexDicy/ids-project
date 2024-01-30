@@ -43,4 +43,14 @@ public class ItineraryController {
 
         manager.submit(new Itinerary(dto.name(), dto.description(), null, false, ids));
     }
+
+    @GetMapping("/approve/{id}")
+    public void approve(@PathVariable String id) {
+        manager.approve(id);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void delete(@PathVariable String id) {
+        manager.remove(id);
+    }
 }
