@@ -32,7 +32,7 @@ public class ItineraryManagerTest {
     }
 
     protected static Itinerary createItinerary(String id, String name, String description, String createdBy, boolean approved, Date date, List<POI> poiList) {
-        return new Itinerary( name, description, null, approved, poiList);
+        return new Itinerary( name, description, null, approved, poiList.stream().map(POI::getId).toList());
     }
 
     @Test
@@ -45,10 +45,10 @@ public class ItineraryManagerTest {
 
         Itinerary it1 = manager.get("ID_1");
         assertEquals("ID_1", it1.getId());
-        List<POI> poiList = it1.getPoiList();
+        List<String> poiList = it1.getPoiList();
         assertEquals(2, poiList.size());
-        assertEquals("POI_ID_1", poiList.get(0).getId());
-        assertEquals("POI_ID_2", poiList.get(1).getId());
+        assertEquals("POI_ID_1", poiList.get(0));
+        assertEquals("POI_ID_2", poiList.get(1));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ItineraryManagerTest {
         assertEquals(2, manager.getAll().size());
         POI p = POIManagerTest.createPOI("ID_5", "POI_5", "Fifth POI", "", false, new Date(), new Coordinate(90, 180));
         Itinerary it = createItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
-        it.addPoi(p);
+        it.addPoi(p.getId());
         manager.submit(it);
         assertEquals(3, manager.getAll().size());
         assertEquals(it, manager.get("ID_5"));
@@ -71,8 +71,8 @@ public class ItineraryManagerTest {
         POI p2 = POIManagerTest.createPOI("ID_6", "POI_6", "Sixth POI", "", false, new Date(), new Coordinate(90, 180));
         Itinerary it = createItinerary("ID_5", "ITIN_5", "Itinerary 5", "", false, new Date(), new ArrayList<>());
         Itinerary it2 = createItinerary("ID_6", "ITIN_6", "Itinerary 6", "", false, new Date(), new ArrayList<>());
-        it.addPoi(p);
-        it2.addPoi(p2);
+        it.addPoi(p.getId());
+        it2.addPoi(p2.getId());
         List<Itinerary> itineraries = new ArrayList<>();
         itineraries.addAll(List.of(it, it2));
         manager.submit(itineraries);

@@ -1,27 +1,24 @@
 package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.model.user.User;
+import it.unicam.cs.ids.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+@Service
 public class UserManager {
-    private final List<User> userList = new ArrayList<>();
+    private final UserRepository repository;
 
-    public User getUser(String id) {
-        Objects.requireNonNull(id, "Id is not valid");
-
-        for (User u : userList) {
-            if (u.getId().equals(id)) {
-                return u;
-            }
-        }
-
-        return null;
+    public UserManager(UserRepository repository) {
+        this.repository = repository;
     }
 
-    public List<User> getUsers() {
-        return userList;
+    public User getUser(String id) {
+        return repository.findById(id).orElseThrow();
+    }
+
+    public List<User> getAll() {
+        return repository.findAll();
     }
 }

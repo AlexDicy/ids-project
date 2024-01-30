@@ -21,4 +21,6 @@ public interface ContentRepository<T extends Content> extends MongoRepository<T,
     List<T> findAllByApproved(boolean approved);
 
     List<T> findAllByCreationDateBetween(Date start, Date end);
+
+    List<T> findAllByApprovedTrueAndIdIn(List<String> ids);
 }

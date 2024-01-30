@@ -49,10 +49,10 @@ public class ImageManagerTest {
 
     private ImageManager getImageManager() {
         ImageManager manager = new ImageManager(null);
-        manager.imagesByPoi.put("ID_1", new ArrayList<>(images1));
-        manager.imagesByPoi.put("ID_2", new ArrayList<>(images2));
-        manager.images.addAll(images1);
-        manager.images.addAll(images2);
+//        manager.imagesByPoi.put("ID_1", new ArrayList<>(images1));
+//        manager.imagesByPoi.put("ID_2", new ArrayList<>(images2));
+//        manager.images.addAll(images1);
+//        manager.images.addAll(images2);
         return manager;
     }
 

@@ -19,6 +19,10 @@ public abstract class ContentManager<C extends Content, R extends ContentReposit
         return repository.findById(id).orElse(null);
     }
 
+    public List<C> getApproved(List<String> ids) {
+        return repository.findAllByApprovedTrueAndIdIn(ids);
+    }
+
     public void submit(C content) {
         repository.save(content);
     }
