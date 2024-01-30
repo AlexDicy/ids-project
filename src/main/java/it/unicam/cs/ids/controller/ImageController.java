@@ -57,7 +57,8 @@ public class ImageController {
         Files.createDirectories(path.getParent());
         Files.write(path, image.getBytes());
 
-        return manager.submit(new Image(name, description, null, false, poiId));
+        manager.submit(new Image(name, description, null, false, poiId));
+        return UPLOAD_DIRECTORY + "/" + name;
     }
 
     @GetMapping("/approve/{id}")
