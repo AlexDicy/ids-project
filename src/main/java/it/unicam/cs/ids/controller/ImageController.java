@@ -51,7 +51,7 @@ public class ImageController {
             throw new BadRequestException("POI not found");
         }
 
-        String extension = originalName.substring(image.getOriginalFilename().lastIndexOf('.'));
+        String extension = originalName.substring(originalName.lastIndexOf('.'));
         String name = poiId + "/" + UUID.randomUUID() + extension;
         Path path = Paths.get(UPLOAD_DIRECTORY, name);
         Files.createDirectories(path.getParent());
