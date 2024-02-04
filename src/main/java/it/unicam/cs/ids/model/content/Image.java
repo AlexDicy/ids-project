@@ -14,4 +14,9 @@ public class Image extends Content {
     public String getIdPoi() {
         return idPOI;
     }
+
+    @Override
+    public ContentType getType() {
+        return ContentType.IMAGE;
+    }
 }
