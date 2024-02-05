@@ -3,7 +3,7 @@ package it.unicam.cs.ids.manager;
 import it.unicam.cs.ids.model.content.Content;
 import it.unicam.cs.ids.repository.ContentRepository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,7 +54,13 @@ public abstract class ContentManager<C extends Content, R extends ContentReposit
         return repository.findAllByApproved(false);
     }
 
-    public List<C> getInDateRange(Date start, Date end) {
+    public List<C> getInDateRange(LocalDateTime start, LocalDateTime end) {
         return repository.findAllByCreationDateBetween(start, end);
+    }
+
+    public List<C> getAllowedUsersApprovedContentsInDateRange(LocalDateTime start, LocalDateTime end, List<String> allowedUsers) {
+        if(allowedUsers.isEmpty())
+            return repository.findAllApprovedContentsInDateRange(start, end);
+        return repository.findAllAllowedUsersApprovedContentsInDateRange(start, end, allowedUsers);
     }
 }

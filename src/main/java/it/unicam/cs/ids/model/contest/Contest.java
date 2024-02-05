@@ -1,15 +1,29 @@
 package it.unicam.cs.ids.model.contest;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        visible = true
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ContentContest.class, name = "CONTENT_CONTEST"),
+        @JsonSubTypes.Type(value = POIContest.class, name = "POI_CONTEST")
+})
 public interface Contest {
 
     String getId();
 
-    Date getStartDate();
+    LocalDateTime getStartDate();
 
-    Date getEndDate();
+    LocalDateTime getEndDate();
 
     List<String> getAllowedUsers();
 
@@ -19,7 +33,7 @@ public interface Contest {
 
     void setWinners(List<String> users);
 
-    Contest getDetails();
-
     String getAnimatorId();
+
+    ContestType getType();
 }

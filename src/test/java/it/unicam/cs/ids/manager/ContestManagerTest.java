@@ -4,7 +4,7 @@ import it.unicam.cs.ids.UtilClass;
 import it.unicam.cs.ids.model.Coordinate;
 import it.unicam.cs.ids.model.content.Content;
 import it.unicam.cs.ids.model.content.POI;
-import it.unicam.cs.ids.model.contest.ConcreteContest;
+import it.unicam.cs.ids.model.contest.GenericContest;
 import it.unicam.cs.ids.model.contest.Contest;
 import it.unicam.cs.ids.model.contest.POIContest;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,18 +26,7 @@ class ContestManagerTest {
     }
 
     @Test
-    void shouldGetContestById() {
-        Contest contest = new ConcreteContest("1", "Test Contest", "Description", new Date(), new Date(), "user1");
-        contestManager.submit(contest);
-
-        Contest retrievedContest = contestManager.get("1");
-
-        assertEquals(contest, retrievedContest);
-    }
-
-    @Test
     void shouldSubmitContest() {
-        Contest contest = new ConcreteContest("1", "Test Contest", "Description", new Date(), new Date(), "user1");
         contestManager.submit(contest);
 
         assertEquals(1, contestManager.contestList.size());
@@ -51,15 +40,15 @@ class ContestManagerTest {
         Date halfDayAgo = new Date(currentDate.getTime() - (86400000 / 2));
         Date tomorrow = new Date(currentDate.getTime() + 86400000);
 
-        Contest contest1 = new ConcreteContest("1", "Test Contest 1", "Description", yesterday, halfDayAgo, "user1");
-        Contest contest2 = new ConcreteContest("2", "Test Contest 2", "Description", yesterday, halfDayAgo, "user1");
-        Contest contest3 = new ConcreteContest("3", "Test Contest 3", "Description", yesterday, tomorrow, "user2");
+        Contest contest1 = new GenericContest("1", "Test Contest 1", "Description", yesterday, halfDayAgo, "user1");
+        Contest contest2 = new GenericContest("2", "Test Contest 2", "Description", yesterday, halfDayAgo, "user1");
+        Contest contest3 = new GenericContest("3", "Test Contest 3", "Description", yesterday, tomorrow, "user2");
         contestManager.submit(contest1);
         contestManager.submit(contest2);
         contestManager.submit(contest3);
 
-        assertEquals(2, contestManager.getCompletedContests("user1").size());
-        assertEquals(0, contestManager.getCompletedContests("user2").size());
+        assertEquals(2, contestManager.getAnimatorCompletedContests("user1").size());
+        assertEquals(0, contestManager.getAnimatorCompletedContests("user2").size());
     }
 
     @Test
@@ -89,7 +78,7 @@ class ContestManagerTest {
 
     @Test
     void shouldSetContestWinners() {
-        Contest contest = new ConcreteContest("1", "Test Contest", "Description", new Date(), new Date(), "user1");
+        Contest contest = new GenericContest("1", "Test Contest", "Description", new Date(), new Date(), "user1");
         contestManager.submit(contest);
 
         List<String> winners = Arrays.asList("winner1", "winner2");
