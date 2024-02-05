@@ -5,7 +5,7 @@ import it.unicam.cs.ids.manager.POIManager;
 import it.unicam.cs.ids.model.content.POI;
 import it.unicam.cs.ids.model.content.TemporaryPOI;
 import it.unicam.cs.ids.model.content.TimedPOI;
-import it.unicam.cs.ids.util.BadRequestException;
+import it.unicam.cs.ids.util.CoordinateOutOfPerimeterException;
 import it.unicam.cs.ids.util.NotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +33,7 @@ public class POIController {
     @PostMapping("/submit")
     public void submit(@RequestBody @Valid POIDTO poi) {
         if (!manager.checkCoordinate(poi.coordinate())) {
-            throw new BadRequestException("Coordinate are not valid");
+            throw new CoordinateOutOfPerimeterException("Coordinate is not valid");
         }
         manager.submit(new POI(poi.name(), poi.description(), poi.createdBy(), false, poi.coordinate()));
     }
@@ -41,7 +41,7 @@ public class POIController {
     @PostMapping("/submitTimed")
     public void submit(@RequestBody @Valid TimedPOIDTO poi) {
         if (!manager.checkCoordinate(poi.coordinate())) {
-            throw new BadRequestException("Coordinate are not valid");
+            throw new CoordinateOutOfPerimeterException("Coordinate is not valid");
         }
         manager.submit(new TimedPOI(poi.name(), poi.description(), null, false, poi.coordinate(), poi.openingTime(), poi.closingTime()));
     }
@@ -49,7 +49,7 @@ public class POIController {
     @PostMapping("/submitTemporary")
     public void submit(@RequestBody @Valid TemporaryPOIDTO poi) {
         if (!manager.checkCoordinate(poi.coordinate())) {
-            throw new BadRequestException("Coordinate are not valid");
+            throw new CoordinateOutOfPerimeterException("Coordinate is not valid");
         }
         manager.submit(new TemporaryPOI(poi.name(), poi.description(), null, false, poi.coordinate(), poi.fromDate(), poi.toDate()));
     }

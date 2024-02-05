@@ -6,10 +6,12 @@ import App from './App.vue';
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHistory(),
-  routes: [{
-    path: '/',
-    component: () => import('./components/Main.vue')
-  }]
+  routes: [
+    {
+      path: '/',
+      component: () => import('./views/Main.vue')
+    }
+  ]
 });
 
 const app = createApp(App);

@@ -4,4 +4,18 @@
 
 html, body, #app {
     height: 100%;
+    @apply text-gray-900;
+}
+
+.button {
+    @apply text-gray-600 border-[1px] rounded px-2 py-1 shadow-sm cursor-pointer select-none;
+    transition: all 100ms;
+}
+
+.button:hover {
+    @apply bg-gray-100 shadow-md;
+}
+
+.button:disabled {
+    @apply bg-gray-200 text-gray-400 cursor-not-allowed;
 }

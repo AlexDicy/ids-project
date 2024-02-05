@@ -24,6 +24,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";

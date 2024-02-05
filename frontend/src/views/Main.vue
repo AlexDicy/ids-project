@@ -7,20 +7,27 @@
     <!-- Map -->
     <div ref="map" class="flex-1"></div>
   </div>
+
+  <NewPOIModal v-if="showNewPOIModal" :coord="newPOICoord" @submit="reloadPOIs" @close="showNewPOIModal = false; this.selectingPositionForPOI = false"/>
 </template>
 
 <script lang="ts">
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import SearchContainer from "@/SearchContainer.vue";
+import SearchContainer from "@/components/SearchContainer.vue";
 import api from "@/api";
+import {checkCoordinate, perimeter, selectingPositionForPOI} from "@/globals";
+import NewPOIModal from "@/components/NewPOIModal.vue";
 
 export default {
-  components: {SearchContainer},
+  components: {NewPOIModal, SearchContainer},
   data() {
     return {
       map: null as L.Map,
-      markersById: new Map<string, L.Marker>()
+      markersById: new Map<string, L.Marker>(),
+      showNewPOIModal: false,
+      newPOICoord: [0, 0],
+      selectingPositionForPOI: selectingPositionForPOI
     };
   },
   mounted() {
@@ -42,6 +49,13 @@ export default {
       window.location.hash = `#${this.map.getCenter().lat.toFixed(4)}/${this.map.getCenter().lng.toFixed(4)}/${this.map.getZoom()}`;
       this.reloadPOIs();
     });
+    this.map.on('click', this.onMapClick);
+
+    // temporary perimeter
+    L.polyline(perimeter, {
+      dashArray: '5, 10',
+      weight: 2.5,
+    }).addTo(this.map);
   },
   methods: {
     getMapBounds() {
@@ -84,6 +98,16 @@ export default {
     async reloadPOIs() {
       const bounds = this.getMapBounds();
       await this.loadPOIsForRange(bounds.start, bounds.end);
+    },
+    onMapClick(e: L.LeafletMouseEvent) {
+      if (this.selectingPositionForPOI) {
+        this.newPOICoord = [e.latlng.lat, e.latlng.lng];
+        if (checkCoordinate(this.newPOICoord)) {
+          this.showNewPOIModal = true;
+        } else {
+          alert('Il punto selezionato non è all\'interno del perimetro del comune!');
+        }
+      }
     }
   },
 }
