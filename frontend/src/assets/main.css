@@ -19,3 +19,7 @@ html, body, #app {
 .button:disabled {
     @apply bg-gray-200 text-gray-400 cursor-not-allowed;
 }
+
+.button svg {
+    @apply ms-1;
+}

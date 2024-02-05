@@ -36,7 +36,7 @@
     </div>
     <div class="flex gap-3">
       <button class="cancel-button" @click="close" :disabled="isLoading">Annulla</button>
-      <button class="button submit-button" @click="submit" :disabled="isLoading">Salva &nbsp;<FontAwesomeIcon :icon="faPen"/>
+      <button class="button submit-button" @click="submit" :disabled="isLoading">Salva <FontAwesomeIcon :icon="faPen"/>
       </button>
     </div>
   </dialog>

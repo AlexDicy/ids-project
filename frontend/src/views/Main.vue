@@ -1,8 +1,12 @@
 <template>
-  <div class="flex-1 flex">
-    <aside class="w-[26rem] shadow-xl">
+  <div class="flex-1 flex relative">
+    <aside class="sidebar" :class="{detached: !showFullSidebar, 'with-results': showSmallSidebar}">
       <!-- Search bar -->
-      <SearchContainer :map="map" :markers-by-id="markersById"/>
+      <div class="sidebar-content">
+        <SearchContainer :map="map" :markers-by-id="markersById"
+                         @toggle-full-container="showFullSidebar = $event" :show-full-sidebar="showFullSidebar"
+                         @has-results="searchHasResults = $event"/>
+      </div>
     </aside>
     <!-- Map -->
     <div ref="map" class="flex-1"></div>
@@ -23,11 +27,14 @@ export default {
   components: {NewPOIModal, SearchContainer},
   data() {
     return {
+      showFullSidebar: false,
+      searchHasResults: false,
       map: null as L.Map,
       markersById: new Map<string, L.Marker>(),
       showNewPOIModal: false,
       newPOICoord: [0, 0],
-      selectingPositionForPOI: selectingPositionForPOI
+      selectingPositionForPOI: selectingPositionForPOI,
+      resizeObserver: null as ResizeObserver
     };
   },
   mounted() {
@@ -35,12 +42,20 @@ export default {
     const lat = hashValues[0] || 43.145;
     const lng = hashValues[1] || 13.06;
     const zoom = hashValues[2] || 14;
-    this.map = L.map(this.$refs.map).setView([lat, lng], zoom);
-    this.map.attributionControl.remove();
+    this.map = L.map(this.$refs.map, {
+      attributionControl: false,
+    }).setView([lat, lng], zoom);
+    this.map.zoomControl.setPosition('bottomright');
 
     this.reloadPOIs();
-    L.Marker.prototype.options.icon = new L.Icon.Default({
-      imagePath: '/images/'
+    L.Marker.prototype.options.icon = new L.icon({
+      iconUrl: '/images/location-dot-border.svg',
+      iconSize: [24, 32],
+      iconAnchor: [12, 32],
+      popupAnchor: [0, -32],
+      shadowUrl: '/images/marker-shadow.png',
+      shadowSize: [32, 32],
+      shadowAnchor: [12, 32]
     });
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -51,11 +66,18 @@ export default {
     });
     this.map.on('click', this.onMapClick);
 
-    // temporary perimeter
     L.polyline(perimeter, {
       dashArray: '5, 10',
       weight: 2.5,
     }).addTo(this.map);
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.map.invalidateSize();
+    });
+    this.resizeObserver.observe(this.$refs.map);
+  },
+  beforeUnmount() {
+    this.resizeObserver.disconnect();
   },
   methods: {
     getMapBounds() {
@@ -110,5 +132,36 @@ export default {
       }
     }
   },
+  computed: {
+    showSmallSidebar() {
+      return this.searchHasResults && !this.showFullSidebar;
+    }
+  }
 }
 </script>
+
+<style scoped>
+.sidebar {
+  @apply w-[26rem] relative;
+}
+
+.sidebar.detached {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+}
+
+.sidebar:not(.detached) {
+  z-index: 1000;
+  @apply bg-white shadow-xl;
+}
+
+.sidebar.with-results {
+  @apply bg-white rounded-br-xl shadow-xl;
+}
+
+.sidebar:not(.detached) .sidebar-content {
+  @apply absolute left-0 top-0 right-0 bottom-0 overflow-y-auto;
+}
+</style>
