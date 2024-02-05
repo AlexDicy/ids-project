@@ -1,18 +1,32 @@
 package it.unicam.cs.ids.model.contest;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import org.springframework.data.annotation.TypeAlias;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
-public class POIContest extends ConcreteContest {
+@Document(collection = "contests")
+public class POIContest extends GenericContest {
 
     private final String idPOI;
 
-    public POIContest(String id, String name, String description, Date startDate, Date endDate, String createdBy, String idPOI) {
-        super(id, name, description, startDate, endDate, createdBy);
+    public POIContest(String name, String description, LocalDateTime startDate, LocalDateTime endDate,
+                      String createdBy, List<String> allowedUsers, String idPOI) {
+        super(name, description, startDate, endDate, createdBy, allowedUsers);
         this.idPOI = Objects.requireNonNull(idPOI);
     }
 
     public String getIdPOI() {
         return idPOI;
+    }
+
+    @Override
+    public ContestType getType() {
+        return ContestType.POI_CONTEST;
     }
 }

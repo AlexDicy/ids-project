@@ -34,7 +34,7 @@ public class POIController {
         if (!manager.checkCoordinate(poi.coordinate())) {
             throw new BadRequestException("Coordinate are not valid");
         }
-        manager.submit(new POI(poi.name(), poi.description(), null, false, poi.coordinate()));
+        manager.submit(new POI(poi.name(), poi.description(), poi.createdBy(), false, poi.coordinate()));
     }
 
     @PostMapping("/getInRange")
