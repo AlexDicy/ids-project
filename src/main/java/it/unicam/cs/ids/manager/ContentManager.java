@@ -31,7 +31,7 @@ public abstract class ContentManager<C extends Content, R extends ContentReposit
         return repository.findAll();
     }
 
-    public List<C> getInDateRange(Date start, Date end) {
+    public List<C> getInDateRange(LocalDateTime start, LocalDateTime end) {
         return repository.findAllByCreationDateBetween(start, end);
     }
 
