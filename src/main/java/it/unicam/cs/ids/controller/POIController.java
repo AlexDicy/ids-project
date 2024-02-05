@@ -2,6 +2,7 @@ package it.unicam.cs.ids.controller;
 
 import it.unicam.cs.ids.controller.dto.GetInAreaDTO;
 import it.unicam.cs.ids.controller.dto.POIDTO;
+import it.unicam.cs.ids.controller.dto.ReportDTO;
 import it.unicam.cs.ids.manager.POIManager;
 import it.unicam.cs.ids.model.content.POI;
 import it.unicam.cs.ids.util.BadRequestException;
@@ -50,5 +51,10 @@ public class POIController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable String id) {
         manager.remove(id);
+    }
+
+    @PostMapping("/report/{id}/from/{reporterId}")
+    public String report(@PathVariable String id, @PathVariable String reporterId, @RequestBody @Valid ReportDTO dto) {
+        return manager.report(id, reporterId, dto.reason());
     }
 }

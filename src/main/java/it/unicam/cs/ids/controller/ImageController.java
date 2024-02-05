@@ -1,10 +1,12 @@
 package it.unicam.cs.ids.controller;
 
+import it.unicam.cs.ids.controller.dto.ReportDTO;
 import it.unicam.cs.ids.manager.ImageManager;
 import it.unicam.cs.ids.manager.POIManager;
 import it.unicam.cs.ids.model.content.Image;
 import it.unicam.cs.ids.util.BadRequestException;
 import it.unicam.cs.ids.util.NotFoundException;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
@@ -69,5 +71,10 @@ public class ImageController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable String id) {
         manager.remove(id);
+    }
+
+    @PostMapping("/report/{id}/from/{reporterId}")
+    public String report(@PathVariable String id, @PathVariable String reporterId, @RequestBody @Valid ReportDTO dto) {
+        return manager.report(id, reporterId, dto.reason());
     }
 }

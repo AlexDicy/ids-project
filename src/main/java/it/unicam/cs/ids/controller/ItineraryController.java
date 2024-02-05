@@ -1,6 +1,7 @@
 package it.unicam.cs.ids.controller;
 
 import it.unicam.cs.ids.controller.dto.ItineraryDTO;
+import it.unicam.cs.ids.controller.dto.ReportDTO;
 import it.unicam.cs.ids.manager.ItineraryManager;
 import it.unicam.cs.ids.manager.POIManager;
 import it.unicam.cs.ids.model.content.Itinerary;
@@ -52,5 +53,10 @@ public class ItineraryController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable String id) {
         manager.remove(id);
+    }
+
+    @PostMapping("/report/{id}/from/{reporterId}")
+    public String report(@PathVariable String id, @PathVariable String reporterId, @RequestBody @Valid ReportDTO dto) {
+        return manager.report(id, reporterId, dto.reason());
     }
 }
