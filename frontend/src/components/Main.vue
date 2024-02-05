@@ -32,7 +32,9 @@ export default {
     this.map.attributionControl.remove();
 
     this.reloadPOIs();
-
+    L.Marker.prototype.options.icon = new L.Icon.Default({
+      imagePath: '/images/'
+    });
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
     }).addTo(this.map);
