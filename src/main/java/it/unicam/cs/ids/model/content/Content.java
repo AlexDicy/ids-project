@@ -1,20 +1,28 @@
 package it.unicam.cs.ids.model.content;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public abstract class Content {
+    @Getter
     @Id
     private String id;
+    @Getter
     private final String name;
+    @Getter
     private final String description;
+    @Setter
+    @Getter
     private boolean approved;
     private final String createdBy;
+    @Getter
     @CreatedDate
-    private Date creationDate;
+    private LocalDateTime creationDate;
     /**
      * The score of the content, used for full text search ranking.
      * Should be null otherwise.
@@ -28,32 +36,8 @@ public abstract class Content {
         this.createdBy = createdBy;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
-    }
-
     public String getAuthorId() {
         return this.createdBy;
-    }
-
-    public Date getCreationDate() {
-        return this.creationDate;
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -1,7 +1,5 @@
 package it.unicam.cs.ids.model.contest;
 
-import it.unicam.cs.ids.model.contest.ConcreteContest;
-import it.unicam.cs.ids.model.contest.Contest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +17,6 @@ public class ConcreteContestTest {
     void setUp() {
         Date startDate = new Date();
         Date endDate = new Date(startDate.getTime() + 86400000); // Adding 1 day to start date
-        contest = new ConcreteContest("1", "Test Contest", "Test Description", startDate, endDate, "123");
     }
 
     @Test
@@ -54,11 +51,6 @@ public class ConcreteContestTest {
         List<String> winners = Arrays.asList("winner1", "winner2");
         contest.setWinners(winners);
         assertEquals(winners, contest.getWinners());
-    }
-
-    @Test
-    void shouldGetDetails() {
-        assertEquals(contest, contest.getDetails());
     }
 
     @Test

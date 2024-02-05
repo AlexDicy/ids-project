@@ -1,46 +1,44 @@
 package it.unicam.cs.ids.model.contest;
 
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class ConcreteContest implements Contest {
+@Document(collection = "contests")
+public abstract class GenericContest implements Contest {
 
-    private final String id;
+    @Getter
+    @Id
+    private String id;
 
     private final String name;
 
     private final String description;
 
-    private final Date startDate;
+    @Getter
+    private final LocalDateTime startDate;
 
-    private final Date endDate;
+    @Getter
+    private final LocalDateTime endDate;
+    @CreatedBy
     private final String createdBy;
     private List<String> allowedUsers;
     private List<String> winners;
 
-    public ConcreteContest(String id, String name, String description, Date startDate, Date endDate, String createdBy) {
-        this.id = Objects.requireNonNull(id, "Contest ID is null");
+    public GenericContest(String name, String description, LocalDateTime startDate, LocalDateTime endDate, String createdBy, List<String> allowedUsers) {
         this.name = Objects.requireNonNull(name, "Contest name is null");
         this.description = Objects.requireNonNull(description, "Contest description is null");
         this.startDate = Objects.requireNonNull(startDate, "Start date is null");
         this.endDate = Objects.requireNonNull(endDate, "End date is null");
         this.createdBy = Objects.requireNonNull(createdBy, "Creator ID is null");
-        allowedUsers = new ArrayList<>();
+        this.allowedUsers = Objects.requireNonNull(allowedUsers, "Users list not valid");
         winners = new ArrayList<>();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
     }
 
     @Override
@@ -61,11 +59,6 @@ public class ConcreteContest implements Contest {
     @Override
     public void setWinners(List<String> users) {
         winners = Objects.requireNonNull(users, "Users list is empty");
-    }
-
-    @Override
-    public Contest getDetails() {
-        return this;
     }
 
     @Override

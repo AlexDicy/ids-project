@@ -1,9 +1,20 @@
 package it.unicam.cs.ids.model.contest;
 
-import java.util.Date;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class ContentContest extends ConcreteContest {
-    public ContentContest(String id, String name, String description, Date startDate, Date endDate, String createdBy) {
-        super(id, name, description, startDate, endDate, createdBy);
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Document(collection = "contests")
+public class ContentContest extends GenericContest {
+
+    public ContentContest(String name, String description, LocalDateTime startDate, LocalDateTime endDate, String createdBy, List<String> allowedUsers) {
+        super(name, description, startDate, endDate, createdBy, allowedUsers);
+    }
+
+    @Override
+    public ContestType getType() {
+        return ContestType.CONTENT_CONTEST;
     }
 }
