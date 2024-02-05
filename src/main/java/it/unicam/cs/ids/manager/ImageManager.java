@@ -1,6 +1,7 @@
 package it.unicam.cs.ids.manager;
 
 import it.unicam.cs.ids.model.content.Image;
+import it.unicam.cs.ids.repository.ContentReportRepository;
 import it.unicam.cs.ids.repository.ImageRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +11,8 @@ import java.util.*;
 @Service
 public class ImageManager extends ContentManager<Image, ImageRepository> {
 
-    public ImageManager(ImageRepository repository) {
-        super(repository);
+    public ImageManager(ImageRepository repository, ContentReportRepository reportRepository) {
+        super(repository, reportRepository);
     }
 
     /**

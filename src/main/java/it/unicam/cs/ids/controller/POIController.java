@@ -1,9 +1,10 @@
 package it.unicam.cs.ids.controller;
 
-import it.unicam.cs.ids.controller.dto.GetInAreaDTO;
-import it.unicam.cs.ids.controller.dto.POIDTO;
+import it.unicam.cs.ids.controller.dto.*;
 import it.unicam.cs.ids.manager.POIManager;
 import it.unicam.cs.ids.model.content.POI;
+import it.unicam.cs.ids.model.content.TemporaryPOI;
+import it.unicam.cs.ids.model.content.TimedPOI;
 import it.unicam.cs.ids.util.BadRequestException;
 import it.unicam.cs.ids.util.NotFoundException;
 import jakarta.validation.Valid;
@@ -37,6 +38,22 @@ public class POIController {
         manager.submit(new POI(poi.name(), poi.description(), poi.createdBy(), false, poi.coordinate()));
     }
 
+    @PostMapping("/submitTimed")
+    public void submit(@RequestBody @Valid TimedPOIDTO poi) {
+        if (!manager.checkCoordinate(poi.coordinate())) {
+            throw new BadRequestException("Coordinate are not valid");
+        }
+        manager.submit(new TimedPOI(poi.name(), poi.description(), null, false, poi.coordinate(), poi.openingTime(), poi.closingTime()));
+    }
+
+    @PostMapping("/submitTemporary")
+    public void submit(@RequestBody @Valid TemporaryPOIDTO poi) {
+        if (!manager.checkCoordinate(poi.coordinate())) {
+            throw new BadRequestException("Coordinate are not valid");
+        }
+        manager.submit(new TemporaryPOI(poi.name(), poi.description(), null, false, poi.coordinate(), poi.fromDate(), poi.toDate()));
+    }
+
     @PostMapping("/getInRange")
     public List<POI> getInRange(@RequestBody @Valid GetInAreaDTO dto) {
         return manager.getInRange(dto.start(), dto.end());
@@ -50,5 +67,10 @@ public class POIController {
     @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable String id) {
         manager.remove(id);
+    }
+
+    @PostMapping("/report/{id}/from/{reporterId}")
+    public String report(@PathVariable String id, @PathVariable String reporterId, @RequestBody @Valid ReportDTO dto) {
+        return manager.report(id, reporterId, dto.reason());
     }
 }

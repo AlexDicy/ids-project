@@ -3,6 +3,7 @@ package it.unicam.cs.ids.manager;
 import it.unicam.cs.ids.model.Coordinate;
 import it.unicam.cs.ids.model.Municipality;
 import it.unicam.cs.ids.model.content.POI;
+import it.unicam.cs.ids.repository.ContentReportRepository;
 import it.unicam.cs.ids.repository.POIRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,8 @@ import java.util.List;
 public class POIManager extends ContentManager<POI, POIRepository> {
     private final Municipality municipality;
 
-    public POIManager(MunicipalityManager municipalityManager, POIRepository repository) {
-        super(repository);
+    public POIManager(MunicipalityManager municipalityManager, POIRepository repository, ContentReportRepository reportRepository) {
+        super(repository, reportRepository);
         this.municipality = municipalityManager.getDefaultMunicipality();
     }
 

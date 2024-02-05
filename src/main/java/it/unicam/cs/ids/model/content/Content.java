@@ -44,4 +44,6 @@ public abstract class Content {
     public Float getSearchScore() {
         return searchScore;
     }
+
+    public abstract ContentType getType();
 }

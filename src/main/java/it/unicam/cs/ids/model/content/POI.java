@@ -21,4 +21,8 @@ public class POI extends Content {
         return coordinate.longitude();
     }
 
+    @Override
+    public ContentType getType() {
+        return ContentType.POI;
+    }
 }

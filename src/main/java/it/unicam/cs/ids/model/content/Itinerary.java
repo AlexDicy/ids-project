@@ -27,4 +27,9 @@ public class Itinerary extends Content {
     public void removePoi(String poiId) {
         poiList.remove(poiId);
     }
+
+    @Override
+    public ContentType getType() {
+        return ContentType.ITINERARY;
+    }
 }
