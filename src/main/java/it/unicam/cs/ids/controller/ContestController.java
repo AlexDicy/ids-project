@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/v1/contest")
-public class ContestController<C extends GenericContest> {
+public class ContestController {
     private final ContestManager contestManager;
     private final ItineraryManager itineraryManager;
     private final POIManager poiManager;

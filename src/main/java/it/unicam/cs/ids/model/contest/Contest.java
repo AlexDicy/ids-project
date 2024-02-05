@@ -3,7 +3,6 @@ package it.unicam.cs.ids.model.contest;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

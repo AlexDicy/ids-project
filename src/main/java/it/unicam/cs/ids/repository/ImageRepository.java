@@ -3,7 +3,6 @@ package it.unicam.cs.ids.repository;
 import it.unicam.cs.ids.model.content.Image;
 import org.springframework.data.mongodb.repository.Query;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @NoRepositoryBean

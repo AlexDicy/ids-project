@@ -1,14 +1,11 @@
 package it.unicam.cs.ids.controller.dto;
 
-import com.fasterxml.jackson.databind.annotation.EnumNaming;
 import it.unicam.cs.ids.model.contest.ContestType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public record ContestDTO(

@@ -1,12 +1,9 @@
 package it.unicam.cs.ids.model.contest;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
