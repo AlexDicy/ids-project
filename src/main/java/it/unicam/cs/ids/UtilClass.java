@@ -19,21 +19,21 @@ public class UtilClass {
 
     public static ImageManager getImageManager() {
         if (imageManager == null) {
-            imageManager = new ImageManager(null);
+            imageManager = new ImageManager(null, null);
         }
         return imageManager;
     }
 
     public static POIManager getPOIManager() {
         if (poiManager == null) {
-            poiManager = new POIManager(getMunicipalityManager(), null);
+            poiManager = new POIManager(getMunicipalityManager(), null, null);
         }
         return poiManager;
     }
 
     public static ItineraryManager getItineraryManager() {
         if (itineraryManager == null) {
-            itineraryManager = new ItineraryManager(null);
+            itineraryManager = new ItineraryManager(null, null);
         }
         return itineraryManager;
     }
