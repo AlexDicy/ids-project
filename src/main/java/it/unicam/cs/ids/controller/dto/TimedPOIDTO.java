@@ -8,6 +8,6 @@ import jakarta.validation.constraints.Size;
 import java.time.OffsetTime;
 
 public record TimedPOIDTO(@NotBlank String name, @NotBlank String description, @NotNull Coordinate coordinate, boolean approved,
-                          @Size(min = 7, max = 7) OffsetTime[][] openingTime,
-                          @Size(min = 7, max = 7) OffsetTime[][] closingTime) {
+                          @Size(min = 7, max = 7) OffsetTime[][] openingTimes,
+                          @Size(min = 7, max = 7) OffsetTime[][] closingTimes) {
 }

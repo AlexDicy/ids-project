@@ -17,6 +17,7 @@ export function formatTime(time: string) {
 export function formatTimeFromDate(date: Date) {
     return hoursFormatter.format(date);
 }
+
 export type CurrentOpeningResult = { open: boolean, nextOpeningTime?: Date, nextClosingTime?: Date };
 
 export function isCurrentlyOpen(openingTimes: string[][], closingTimes: string[][]): CurrentOpeningResult {
@@ -56,4 +57,18 @@ export function isCurrentlyOpen(openingTimes: string[][], closingTimes: string[]
         open: false,
         nextOpeningTime
     };
+}
+
+export function getOffsetString() {
+    const negMinutes = -new Date().getTimezoneOffset();
+    const minutes = Math.abs(negMinutes);
+    const hourOffset = Math.floor(minutes / 60);
+    const minuteOffset = minutes % 60;
+    return `${negMinutes <= 0 ? '+' : '-'}${padStart(hourOffset, 2, '0')}:${padStart(minuteOffset, 2, '0')}`;
+}
+
+function padStart(val: any, length: number, pad: string) {
+    const s = String(val);
+    if (!s || s.length >= length) return val;
+    return `${Array((length + 1) - s.length).join(pad)}${val}`;
 }

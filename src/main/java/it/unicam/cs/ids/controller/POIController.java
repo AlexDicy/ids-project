@@ -43,7 +43,7 @@ public class POIController {
         if (!manager.checkCoordinate(poi.coordinate())) {
             throw new CoordinateOutOfPerimeterException("Coordinate is not valid");
         }
-        manager.submit(new TimedPOI(poi.name(), poi.description(), null, poi.approved(), poi.coordinate(), poi.openingTime(), poi.closingTime()));
+        manager.submit(new TimedPOI(poi.name(), poi.description(), null, poi.approved(), poi.coordinate(), poi.openingTimes(), poi.closingTimes()));
     }
 
     @PostMapping("/submitTemporary")

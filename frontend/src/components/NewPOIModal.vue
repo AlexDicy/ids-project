@@ -96,7 +96,7 @@ import {faCopy} from "@fortawesome/free-regular-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import api, {parseResponse} from "@/api";
 import {selectedRole} from "@/roles";
-import {getDayName} from "@/dates";
+import {getDayName, getOffsetString} from "@/dates";
 
 const props = defineProps({
   coord: {
@@ -147,9 +147,10 @@ function submit() {
       }
     }
 
+    const offset = getOffsetString();
     additionalData = {
-      openingTimes: openingTimes.value.map(times => times.map(time => time.open)),
-      closingTimes: openingTimes.value.map(times => times.map(time => time.close))
+      openingTimes: openingTimes.value.map(times => times.map(time => time.open + offset)),
+      closingTimes: openingTimes.value.map(times => times.map(time => time.close + offset))
     };
     path = '/submitTimed';
   }
@@ -195,7 +196,6 @@ function askCopyTimes(day: number) {
       if (i !== day - 1) {
         openingTimes.value[i] = openingTimes.value[day - 1].map(time => ({open: time.open, close: time.close, error: time.error}));
       } else {
-        console.log(openingTimes.value[i]);
       }
     }
   }
@@ -214,7 +214,6 @@ function checkTimes() {
       if (openHour > closeHour || (openHour === closeHour && openMinute >= closeMinute)) {
         time.error = 'L\'orario di chiusura deve essere successivo a quello di apertura';
       }
-      console.log(time.open, time.close);
     }
   }
 }
