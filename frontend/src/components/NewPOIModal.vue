@@ -45,6 +45,41 @@
       <label class="input-label" for="poiDescription">Descrizione</label>
       <textarea v-model="description" placeholder="Inserisci una descrizione del POI" id="poiDescription"></textarea>
     </div>
+
+    <div v-if="poiType === 'TimedPOI'">
+      <div class="subtitle">Orari di apertura</div>
+      <div v-for="day in 7" class="flex flex-col gap-2">
+        <label class="input-label min-w-20">{{ getDayName(day) }}</label>
+        <template v-for="time in openingTimes[day - 1]">
+          <div v-if="time.error" class="text-red-500">
+            {{ time.error || 'Orario non valido' }}
+          </div>
+          <div class="flex gap-2 items-center">
+            <span>dalle ore </span>
+            <input type="time" v-model="time.open" class="flex-1">
+            <span> alle ore </span>
+            <input type="time" v-model="time.close" class="flex-1" @blur="checkTimes">
+            <button @click="openingTimes[day - 1].splice(openingTimes[day - 1].indexOf(time), 1)" class="text-red-500">
+              <FontAwesomeIcon :icon="faRemove"/>
+            </button>
+          </div>
+        </template>
+        <div v-if="!openingTimes[day - 1].length">
+          chiuso tutto il giorno
+        </div>
+        <div class="mb-8 text-sm flex gap-2 justify-between">
+          <button @click="askCopyTimes(day)" class="button">
+            Copia su tutti gli altri giorni
+            <FontAwesomeIcon :icon="faCopy"/>
+          </button>
+          <button @click="openingTimes[day - 1].push({open: '', close: ''})" class="button new-times-button">
+            Nuova riga
+            <FontAwesomeIcon :icon="faAdd"/>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="flex gap-3">
       <button class="cancel-button" @click="close" :disabled="isLoading">Annulla</button>
       <button class="button submit-button" @click="submit" :disabled="isLoading">Salva
@@ -55,10 +90,13 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, PropType, ref} from 'vue';
-import {faClose, faPen} from "@fortawesome/free-solid-svg-icons";
+import {nextTick, onMounted, PropType, ref} from 'vue';
+import {faClose, faPen, faRemove, faAdd} from "@fortawesome/free-solid-svg-icons";
+import {faCopy} from "@fortawesome/free-regular-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import api, {parseResponse} from "@/api";
+import {selectedRole} from "@/roles";
+import {getDayName} from "@/dates";
 
 const props = defineProps({
   coord: {
@@ -84,6 +122,11 @@ const close = (force = false) => {
 const poiType = ref('POI');
 const name = ref('');
 const description = ref('');
+const openingTimes = ref(Array(7));
+for (let i = 0; i < 7; i++) {
+  openingTimes.value[i] = [{open: '', close: '', error: false}];
+}
+
 const isLoading = ref(false);
 
 function submit() {
@@ -92,19 +135,43 @@ function submit() {
     return;
   }
 
+  let additionalData = {};
+  let path = '/submit';
+
+  if (poiType.value === 'TimedPOI') {
+    checkTimes();
+    for (let i = 0; i < 7; i++) {
+      if (openingTimes.value[i].some(time => time.error)) {
+        alert('Correggi gli orari di apertura');
+        return;
+      }
+    }
+
+    additionalData = {
+      openingTimes: openingTimes.value.map(times => times.map(time => time.open)),
+      closingTimes: openingTimes.value.map(times => times.map(time => time.close))
+    };
+    path = '/submitTimed';
+  }
+
+  const isApproved = selectedRole.value != 'CONTRIBUTOR';
+
   isLoading.value = true;
-  api.post('/v1/poi/submit', {
+  api.post(`/v1/poi${path}`, {
     name: name.value,
     coordinate: {
       latitude: props.coord[0],
       longitude: props.coord[1]
     },
     description: description.value,
-    createdBy: "65b7ded68bfb54b2eacfe3b7"
+    createdBy: "65b7ded68bfb54b2eacfe3b7",
+    approved: isApproved,
+    ...additionalData
   }).then(() => {
+    isLoading.value = false;
     close(true);
     emit('submit');
-    isLoading.value = false;
+    nextTick(() => alert('POI salvato correttamente' + (isApproved ? '' : ', verrà approvato da un moderatore')));
   }).catch(async (e) => {
     isLoading.value = false;
     console.error(e);
@@ -120,6 +187,36 @@ function submit() {
       alert('Errore durante il salvataggio del POI\n\n' + message);
     }
   });
+}
+
+function askCopyTimes(day: number) {
+  if (confirm('Sei sicuro di voler copiare gli orari di apertura di ' + getDayName(day) + ' su tutti gli altri giorni?')) {
+    for (let i = 0; i < 7; i++) {
+      if (i !== day - 1) {
+        openingTimes.value[i] = openingTimes.value[day - 1].map(time => ({open: time.open, close: time.close, error: time.error}));
+      } else {
+        console.log(openingTimes.value[i]);
+      }
+    }
+  }
+}
+
+function checkTimes() {
+  for (let i = 0; i < 7; i++) {
+    for (let time of openingTimes.value[i]) {
+      time.error = false;
+      if (!time.open || !time.close) {
+        time.error = 'Inserisci entrambi gli orari';
+        continue;
+      }
+      const [openHour, openMinute] = time.open.split(':').map(Number);
+      const [closeHour, closeMinute] = time.close.split(':').map(Number);
+      if (openHour > closeHour || (openHour === closeHour && openMinute >= closeMinute)) {
+        time.error = 'L\'orario di chiusura deve essere successivo a quello di apertura';
+      }
+      console.log(time.open, time.close);
+    }
+  }
 }
 </script>
 
@@ -161,8 +258,16 @@ input[type="text"], textarea {
   @apply text-sm text-gray-600 font-medium uppercase;
 }
 
+input[type="time"] {
+  @apply px-2 py-1 rounded border border-gray-300;
+}
+
+.new-times-button {
+  @apply text-blue-500;
+}
+
 .cancel-button {
-  @apply text-red-800 px-4 rounded ml-auto;
+  @apply text-gray-600 px-4 rounded ml-auto;
 }
 
 .cancel-button:hover {

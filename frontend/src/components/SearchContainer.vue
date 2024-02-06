@@ -13,18 +13,7 @@
 
   <div v-if="showFullSidebar">
     <div class="px-8 py-1 text-lg">Risultati</div>
-    <div v-for="result of results" :key="result.id" class="px-8 py-3 border-b-[1px] border-gray-300 relative">
-      <a class="absolute inset-0 cursor-pointer" @click="onResultClick(result)"></a>
-      <div class="mb-1">
-        <span class="font-medium">{{ result.name }}</span>&nbsp;
-        <span v-if="result.type === 'POI'" class="text-sm font-medium text-blue-600">
-          Punto di interesse <img class="h-4 ml-1 inline align-text-bottom" src="/images/location-dot-solid.svg" alt="POI">
-        </span>
-        <span v-else-if="result.type === 'ITINERARY'" class="text-sm font-medium text-green-600">Itinerario</span>
-      </div>
-      <div class="text-sm text-gray-600 line-clamp-3">{{ result.description }}</div>
-      <div class="text-sm text-gray-600">{{ result.latitude }}, {{ result.longitude }}</div>
-    </div>
+    <search-result v-for="result in results" :key="result.id" :result="result" :on-result-click="onResultClick"/>
 
     <div class="mx-4 my-8 text-sm text-gray-600 text-center">
       <span v-if="results.length === 0">Nessun risultato</span>
@@ -44,8 +33,9 @@
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {faSearch, faX} from "@fortawesome/free-solid-svg-icons";
 import {computed, ref, watch} from "vue";
-import api from "@/api";
 import {useRoute, useRouter} from "vue-router";
+import api from "@/api";
+import SearchResult from "@/components/SearchResult.vue";
 
 const props = defineProps({
   map: L.Map,

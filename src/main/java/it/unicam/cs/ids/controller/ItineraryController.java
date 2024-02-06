@@ -42,7 +42,7 @@ public class ItineraryController {
             throw new BadRequestException("One or more POI not found");
         }
 
-        manager.submit(new Itinerary(dto.name(), dto.description(), dto.createdBy(), false, ids));
+        manager.submit(new Itinerary(dto.name(), dto.description(), dto.createdBy(), dto.approved(), ids));
     }
 
     @GetMapping("/approve/{id}")

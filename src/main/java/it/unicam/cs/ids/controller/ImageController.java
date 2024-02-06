@@ -41,7 +41,7 @@ public class ImageController {
     }
 
     @PostMapping("/submit")
-    public String submit(@RequestPart @NotNull MultipartFile image, @RequestPart @NotEmpty String description, @RequestPart @NotEmpty String poiId, @RequestPart @NotEmpty String userId) throws IOException {
+    public String submit(@RequestPart @NotNull MultipartFile image, @RequestPart @NotEmpty String description, @RequestPart @NotEmpty String poiId, @RequestPart @NotEmpty String userId, @RequestPart boolean approved) throws IOException {
         if (image.getSize() <= 0 || image.getSize() > 1024 * 1024 * 10) { // 10 MB
             throw new BadRequestException("Invalid image size");
         }
@@ -59,7 +59,7 @@ public class ImageController {
         Files.createDirectories(path.getParent());
         Files.write(path, image.getBytes());
 
-        manager.submit(new Image(name, description, userId, false, poiId));
+        manager.submit(new Image(name, description, userId, approved, poiId));
         return UPLOAD_DIRECTORY + "/" + name;
     }
 

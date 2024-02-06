@@ -35,7 +35,7 @@ public class POIController {
         if (!manager.checkCoordinate(poi.coordinate())) {
             throw new CoordinateOutOfPerimeterException("Coordinate is not valid");
         }
-        manager.submit(new POI(poi.name(), poi.description(), poi.createdBy(), false, poi.coordinate()));
+        manager.submit(new POI(poi.name(), poi.description(), poi.createdBy(), poi.approved(), poi.coordinate()));
     }
 
     @PostMapping("/submitTimed")
@@ -43,7 +43,7 @@ public class POIController {
         if (!manager.checkCoordinate(poi.coordinate())) {
             throw new CoordinateOutOfPerimeterException("Coordinate is not valid");
         }
-        manager.submit(new TimedPOI(poi.name(), poi.description(), null, false, poi.coordinate(), poi.openingTime(), poi.closingTime()));
+        manager.submit(new TimedPOI(poi.name(), poi.description(), null, poi.approved(), poi.coordinate(), poi.openingTime(), poi.closingTime()));
     }
 
     @PostMapping("/submitTemporary")
@@ -51,7 +51,7 @@ public class POIController {
         if (!manager.checkCoordinate(poi.coordinate())) {
             throw new CoordinateOutOfPerimeterException("Coordinate is not valid");
         }
-        manager.submit(new TemporaryPOI(poi.name(), poi.description(), null, false, poi.coordinate(), poi.fromDate(), poi.toDate()));
+        manager.submit(new TemporaryPOI(poi.name(), poi.description(), null, poi.approved(), poi.coordinate(), poi.fromDate(), poi.toDate()));
     }
 
     @PostMapping("/getInRange")

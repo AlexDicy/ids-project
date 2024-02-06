@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record TemporaryPOIDTO(@NotBlank String name, @NotBlank String description, @NotNull Coordinate coordinate,
+public record TemporaryPOIDTO(@NotBlank String name, @NotBlank String description, @NotNull Coordinate coordinate, boolean approved,
                               @NotNull LocalDate fromDate,
                               @NotNull LocalDate toDate) {
 }

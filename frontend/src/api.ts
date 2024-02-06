@@ -1,4 +1,6 @@
-const BASE_URL = 'https://ids-project-backend.dicy.dev:8443';
+// const BASE_URL = 'https://ids-project-backend.dicy.dev:8443';
+// TODO turn back
+const BASE_URL = 'http://localhost:8080';
 
 export const get = async (path: string) => {
     const response = await fetch(`${BASE_URL}${path}`);

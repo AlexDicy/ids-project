@@ -8,5 +8,6 @@ public record POIDTO(
         @NotBlank String name,
         @NotBlank String description,
         @NotNull Coordinate coordinate,
-        @NotBlank String createdBy
+        @NotBlank String createdBy,
+        boolean approved
 ) {}

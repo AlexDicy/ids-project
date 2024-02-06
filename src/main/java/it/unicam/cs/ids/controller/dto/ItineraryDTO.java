@@ -8,5 +8,6 @@ public record ItineraryDTO(
         @NotBlank String name,
         @NotBlank String description,
         @NotEmpty @Size(min = 3) String[] pois,
-        @NotBlank String createdBy
+        @NotBlank String createdBy,
+        boolean approved
 ) {}
