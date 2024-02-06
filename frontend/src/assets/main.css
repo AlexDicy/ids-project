@@ -23,3 +23,7 @@ html, body, #app {
 .button svg {
     @apply ms-1;
 }
+
+dialog::backdrop {
+    @apply bg-gray-800/60;
+}

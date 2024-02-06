@@ -1,8 +1,8 @@
 <template>
-  <dialog ref="dialog" class="p-8 rounded shadow-xl flex flex-col gap-4">
+  <dialog ref="dialog" class="p-8 rounded shadow-2xl flex flex-col gap-4">
     <div class="flex gap-12 text-2xl">
       <div>Inserisci nuovo POI</div>
-      <button class="close-icon" @click="close" :disabled="isLoading">
+      <button class="close-icon ml-auto" @click="close" :disabled="isLoading">
         <FontAwesomeIcon :icon="faClose"/>
       </button>
     </div>
@@ -10,33 +10,45 @@
       {{ props.coord }}
     </div>
     <div class="flex flex-col">
-      <div class="font-medium">Scegli il tipo di POI</div>
-      <label>
-        <input type="radio" name="poiType" value="POI" v-model="poiType">
-        Generico
-      </label>
-      <label>
-        <input type="radio" name="poiType" value="TimedPOI" v-model="poiType">
-        Con orari di apertura
-      </label>
-      <label>
-        <input type="radio" name="poiType" value="TemporaryPOI" v-model="poiType">
-        Temporaneo
-      </label>
+      <div class="subtitle">Scegli il tipo</div>
+      <div class="flex gap-2 mt-2">
+        <input type="radio" name="poiType" value="POI" v-model="poiType" id="poiTypeGeneric">
+        <label class="radio-label" for="poiTypeGeneric">
+          <span>Semplice</span>
+          <div>
+            Punto di interesse generico, come un monumento o un punto di riferimento.
+          </div>
+        </label>
+        <input type="radio" name="poiType" value="TimedPOI" v-model="poiType" id="poiTypeTimed">
+        <label class="radio-label" for="poiTypeTimed">
+          <span>Con orari</span>
+          <div>
+            Per attività che hanno un orario di apertura e chiusura come bar e negozi.
+          </div>
+        </label>
+        <input type="radio" name="poiType" value="TemporaryPOI" v-model="poiType" id="poiTypeTemporary">
+        <label class="radio-label" for="poiTypeTemporary">
+          <span>Temporaneo</span>
+          <div>
+            Eventi, mercati e manifestazioni temporanee. POI che hanno una data di inizio e fine.
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <div class="subtitle">Inserisci i dettagli</div>
+      <label class="input-label" for="poiName">Nome</label>
+      <input v-model="name" type="text" placeholder="Inserisci il nome del POI" id="poiName">
     </div>
     <div>
-      <label>Nome<br>
-        <input v-model="name" type="text" placeholder="Inserisci il nome del POI">
-      </label>
-    </div>
-    <div>
-      <label>Descrizione<br>
-        <textarea v-model="description" placeholder="Inserisci una descrizione del POI"></textarea>
-      </label>
+      <label class="input-label" for="poiDescription">Descrizione</label>
+      <textarea v-model="description" placeholder="Inserisci una descrizione del POI" id="poiDescription"></textarea>
     </div>
     <div class="flex gap-3">
       <button class="cancel-button" @click="close" :disabled="isLoading">Annulla</button>
-      <button class="button submit-button" @click="submit" :disabled="isLoading">Salva <FontAwesomeIcon :icon="faPen"/>
+      <button class="button submit-button" @click="submit" :disabled="isLoading">Salva
+        <FontAwesomeIcon :icon="faPen"/>
       </button>
     </div>
   </dialog>
@@ -112,8 +124,41 @@ function submit() {
 </script>
 
 <style scoped>
+.radio-label {
+  transition: all 100ms;
+  @apply border-4 border-gray-300 rounded-lg p-3 shadow-lg cursor-pointer select-none;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input:checked + .radio-label {
+  @apply border-blue-500 shadow-md;
+}
+
 input[type="text"], textarea {
   @apply w-full my-2 px-4 py-2 rounded border border-gray-300 placeholder-gray-500;
+}
+
+.radio-label span {
+  @apply font-medium uppercase text-gray-600;
+}
+
+.radio-label div {
+  @apply text-sm text-gray-500 max-w-32 mt-1;
+}
+
+.radio-label:hover {
+  @apply border-blue-500 shadow-md;
+}
+
+.subtitle {
+  @apply text-xl text-gray-800 mt-4 pb-2 mb-2 border-b;
+}
+
+.input-label {
+  @apply text-sm text-gray-600 font-medium uppercase;
 }
 
 .cancel-button {
