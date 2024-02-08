@@ -1,9 +1,12 @@
 package it.unicam.cs.ids.controller;
 
 import it.unicam.cs.ids.controller.dto.ContestDTO;
-import it.unicam.cs.ids.manager.*;
+import it.unicam.cs.ids.manager.ContestManager;
+import it.unicam.cs.ids.manager.ImageManager;
+import it.unicam.cs.ids.manager.ItineraryManager;
+import it.unicam.cs.ids.manager.POIManager;
 import it.unicam.cs.ids.model.content.Content;
-import it.unicam.cs.ids.model.contest.GenericContest;
+import it.unicam.cs.ids.model.contest.Contest;
 import it.unicam.cs.ids.model.contest.POIContest;
 import it.unicam.cs.ids.util.BadRequestException;
 import jakarta.validation.Valid;
@@ -29,9 +32,9 @@ public class ContestController {
     }
 
     @GetMapping("")
-    public GenericContest getById(@RequestParam String id) {
+    public Contest getById(@RequestParam String id) {
 
-        GenericContest contest = contestManager.get(id);
+        Contest contest = contestManager.get(id);
         if (contest == null) {
             throw new BadRequestException("Contest not found");
         }
@@ -45,12 +48,12 @@ public class ContestController {
     }
 
     @GetMapping("/completed")
-    public List<GenericContest> getCompletedContestsByAnimatorId(@RequestParam String animatorId) {
+    public List<Contest> getCompletedContestsByAnimatorId(@RequestParam String animatorId) {
         return contestManager.getAnimatorCompletedContests(animatorId);
     }
 
     @GetMapping("/pending")
-    public List<GenericContest> getPendingContestsByAnimatorId(@RequestParam String animatorId) {
+    public List<Contest> getPendingContestsByAnimatorId(@RequestParam String animatorId) {
         return contestManager.getAnimatorPendingContests(animatorId);
     }
 
@@ -61,7 +64,7 @@ public class ContestController {
 
     @GetMapping("/contents")
     public List<Content> getContestContents(@RequestParam String contestId) {
-        GenericContest contest = contestManager.get(contestId);
+        Contest contest = contestManager.get(contestId);
         if (contest == null) {
             throw new NoSuchElementException("Contest not found");
         }

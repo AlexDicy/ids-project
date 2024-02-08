@@ -17,8 +17,10 @@ public abstract class GenericContest implements Contest {
     @Id
     private String id;
 
+    @Getter
     private final String name;
 
+    @Getter
     private final String description;
 
     @Getter
