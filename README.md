@@ -2,7 +2,7 @@
 ### IDS Project
 **University exam - Software Engineering project**
 
-Preview: https://ids-project.dicy.dev
+Preview: ~~https://ids-project.dicy.dev~~ (offline)
 
 <img alt="Home screenshot" src="/frontend/public/home_preview.png"/>
 
